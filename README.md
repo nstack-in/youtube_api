@@ -73,8 +73,12 @@ class _MyAppState extends State<MyApp> {
 ```
 
 Default Per-page result is 10 and by default it you search for video only.
+
 Type(String) can be video, playlist , channel
+
 maxResults(int) can be 1 - 50
 ``` dart
-YoutubeAPI ytApi = new YoutubeAPI(key,maxResults: ,Type: "type");
+int max = 25;
+String type = "channel";
+YoutubeAPI ytApi = new YoutubeAPI(key,maxResults: max,Type: type);
 ```
