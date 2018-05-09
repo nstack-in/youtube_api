@@ -1,4 +1,4 @@
-# youtube_api
+# Youtube API (youtube_api)
 
 [![pub package](https://img.shields.io/pub/v/youtube_api.svg)](https://pub.dartlang.org/packages/youtube_api)
 
