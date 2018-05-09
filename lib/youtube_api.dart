@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:youtube_api/_API.dart';
+import 'package:youtube_api/_api.dart';
 
 class YoutubeAPI {
   static const MethodChannel _channel =
