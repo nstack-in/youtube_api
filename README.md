@@ -25,9 +25,9 @@ List<YT_API> ytResult = [];
 
 String query = "Flutter";
 ytResult = await ytApi.Search(query);
-// ytResult has 
+// data which are available in ytResult are shown below 
 ```
-These data are stored in 
+These data are stored in ytResult
 ```json
 [
     {
