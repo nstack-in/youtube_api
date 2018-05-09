@@ -4,6 +4,11 @@
 
 A Flutter plugin for fetching interacting with Youtube Server to fetch data using API. Supports iOS and Android.
 
+## Features:
+
+* Search Video, Playlist, Channel on youtube.
+* Play Youtube Video [Coming Soon]
+
 ## Usage
 To use this plugin, add `youtube_api` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
@@ -32,3 +37,7 @@ int max = 25;
 String type = "channel";
 YoutubeAPI ytApi = new YoutubeAPI(key,maxResults: max,Type: type);
 ```
+
+*Note*: This plugin is still under development, and some APIs might not be available yet.
+[Feedback welcome](https://github.com/nitishk72/youtube_api/issues) and
+[Pull Requests](https://github.com/nitishk72/youtube_api/pulls) are most welcome!
