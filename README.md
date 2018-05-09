@@ -72,15 +72,26 @@ These data are stored in ytResult
  ]
 ```
 
-Default Per-page result is 10 and by default it you search for video only.
+Default per-page result is 10 .
 
-Type(String) can be video, playlist , channel
+If you want search any specif out i.e video or  playlist or channel. 
+For Channel only specify  > Type : "channel"
+
+For Video only specify    > Type : "video"
+
+For Playlist only specify > Type : "playlist"
 
 maxResults(int) can be 1 - 50
 ``` dart
+
 int max = 25;
+
 String type = "channel";
-YoutubeAPI ytApi = new YoutubeAPI(key,maxResults: max,Type: type);
+
+YoutubeAPI ytApi = new YoutubeAPI(key,
+                                  maxResults: max,
+                                  Type: type);
+
 ```
 
 *Note*: This plugin is still under development, and some APIs might not be available yet.
