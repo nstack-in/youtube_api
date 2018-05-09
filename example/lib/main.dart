@@ -16,7 +16,7 @@ class _MyAppState extends State<MyApp> {
 
   call_API() async {
     print('UI callled');
-    String query = "Flutter";
+    String query = "FLUTTER";
     ytResult = await ytApi.Search(query);
     setState(() {
       print('UI Updated');
@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
+    call_API();
     return new MaterialApp(
       home: new Scaffold(
           appBar: new AppBar(
@@ -38,20 +39,43 @@ class _MyAppState extends State<MyApp> {
           body: new Container(
             child: ListView.builder(
                 itemCount: ytResult.length,
-                itemBuilder: (_, int index) => ListItem(ytResult[index].title)
+                itemBuilder: (_, int index) => ListItem(index)
             ),
           )
       ),
     );
   }
-  Widget ListItem(title){
+  Widget ListItem(index){
     return new Card(
       child: new Container(
         margin: EdgeInsets.symmetric(vertical: 7.0),
         padding: EdgeInsets.all(12.0),
-        child: new Text(
-          title,
-          softWrap: true,
+        child:new Row(
+          children: <Widget>[
+            new Image.network(ytResult[index].thumbnail['default']['url'],),
+            new Padding(padding: EdgeInsets.only(right: 20.0)),
+            new Expanded(child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  ytResult[index].title,
+                  softWrap: true,
+                  style: TextStyle(fontSize:18.0),
+                ),
+                new Padding(padding: EdgeInsets.only(bottom: 1.5)),
+                new Text(
+                  ytResult[index].channelTitle,
+                  softWrap: true,
+                ),
+                new Padding(padding: EdgeInsets.only(bottom: 3.0)),
+                new Text(
+                  ytResult[index].description,
+                  softWrap: true,
+                ),
+              ]
+            ))
+          ],
         ),
       ),
     );

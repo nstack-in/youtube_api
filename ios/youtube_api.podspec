@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'youtube_api'
-  s.version          = '0.1.1'
+  s.version          = '0.2.0'
   s.summary          = 'A Flutter plugin for fetching interacting with Youtube Server to fetch data using API'
   s.description      = <<-DESC
 A new Flutter plugin.

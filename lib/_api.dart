@@ -1,9 +1,9 @@
 class API{
   String Key;
-  int maxResults = 10;
+  int maxResults;
   String order;
   String safeSearch;
-  String Type = 'video';
+  String Type;
   String videoDuration;
   String nextPageToken;
   String prevPageToken;

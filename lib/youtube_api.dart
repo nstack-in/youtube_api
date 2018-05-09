@@ -17,7 +17,7 @@ class YoutubeAPI {
   int page;
 
 //  Constructor
-  YoutubeAPI(this.Key, { String type: "video", int maxResults: 10}) {
+  YoutubeAPI(this.Key, { String type, int maxResults: 10}) {
     page = 0;
     this.Type = type;
     this.maxResults = maxResults;
@@ -29,12 +29,13 @@ class YoutubeAPI {
   }
 
 //  For Searching on YouTube
-  Future<List> Search(String query, {String type: 'video'}) async {
+  Future<List> Search(String query, {String type}) async {
     List<YT_API> result = [];
     this.Query = query;
     Uri url = api.searchUri(query, Type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+    if(jsonData == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     api.setNextPageToken(nextPageToken);
     int total =
@@ -56,6 +57,7 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+    if(jsonData == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
@@ -82,6 +84,7 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+    if(jsonData == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
@@ -129,16 +132,40 @@ class YoutubeAPI {
 //To Reduce import
 // I added this here
 class YT_API {
-  Object thumbnail, kind, id, publishedAt, channelId, title, description,
-      channelTitle;
+  dynamic thumbnail;
+  String kind, id, publishedAt, channelId,channelurl, title, description,
+      channelTitle, url;
 
   YT_API(dynamic data) {
+    thumbnail = {
+      'default': data['snippet']['thumbnails']['default'],
+      'medium': data['snippet']['thumbnails']['medium'],
+      'high': data['snippet']['thumbnails']['high']
+    };
     kind = data['id']['kind'].substring(8);
     id = data['id'][data['id'].keys.elementAt(1)];
+    url = getURL(kind, id);
     publishedAt = data['snippet']['publishedAt'];
     channelId = data['snippet']['channelId'];
+    channelurl = "https://www.youtube.com/channel/${channelId}";
     title = data['snippet']['title'];
     description = data['snippet']['description'];
-    channelId = data['snippet']['channelId'];
+    channelTitle = data['snippet']['channelTitle'];
+  }
+
+  String getURL(String kind, String id) {
+    String base_url = "https://www.youtube.com/";
+    switch (kind) {
+      case 'channel':
+        return "${base_url}watch?v=${id}";
+        break;
+      case 'video':
+        return "${base_url}watch?v=${id}";
+        break;
+      case 'playlist':
+        return "${base_url}watch?v=${id}";
+        break;
+    }
+    return base_url;
   }
 }
