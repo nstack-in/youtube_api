@@ -1,12 +1,12 @@
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:youtube_api/_api.dart';
 
 class YoutubeAPI {
-  static const MethodChannel _channel =
-  const MethodChannel('youtube_api');
+  static const MethodChannel _channel = const MethodChannel('youtube_api');
   String Key;
   String Type;
   String Query;
@@ -17,30 +17,43 @@ class YoutubeAPI {
   int page;
 
 //  Constructor
-  YoutubeAPI(this.Key, { String type, int maxResults: 10}) {
+  YoutubeAPI(this.Key, {String type, int maxResults: 10}) {
     page = 0;
     this.Type = type;
     this.maxResults = maxResults;
-    api = new API(
-        Key: this.Key,
-        maxResults: this.maxResults,
-        Type: this.Type
-    );
+    api = new API(Key: this.Key, maxResults: this.maxResults, Type: this.Type);
   }
 
 //  For Searching on YouTube
   Future<List> Search(String query, {String type}) async {
-    List<YT_API> result = [];
     this.Query = query;
     Uri url = api.searchUri(query, Type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+<<<<<<< HEAD
     if(jsonData['pageInfo']['totalResults'] == null) return [];
+=======
+    List<YT_API> result = _getResultFromJson(jsonData);
+    return result;
+  }
+
+// For getting all videos from youtube channel
+  Future<List> Channel(String channelId, {String order}) async {
+    Uri url = api.channelUri(channelId, order);
+    var res = await http.get(url, headers: {"Accept": "application/json"});
+    var jsonData = json.decode(res.body);
+    List<YT_API> result = _getResultFromJson(jsonData);
+    return result;
+  }
+
+  List<YT_API> _getResultFromJson(jsonData) {
+    List<YT_API> result = [];
+    if (jsonData == null) return [];
+>>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
     nextPageToken = jsonData['nextPageToken'];
     api.setNextPageToken(nextPageToken);
-    int total =
-    jsonData['pageInfo']['totalResults'] <
-        jsonData['pageInfo']['resultsPerPage']
+    int total = jsonData['pageInfo']['totalResults'] <
+            jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
     for (int i = 0; i < total; i++) {
@@ -57,19 +70,21 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+<<<<<<< HEAD
     if(jsonData['pageInfo']['totalResults'] == null) return [];
+=======
+    if (jsonData == null) return [];
+>>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
     api.setPrevPageToken(prevPageToken);
-    int total =
-    jsonData['pageInfo']['totalResults'] <
-        jsonData['pageInfo']['resultsPerPage']
+    int total = jsonData['pageInfo']['totalResults'] <
+            jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
     for (int i = 0; i < total; i++) {
-      result.add(new YT_API
-        (jsonData['items'][i]));
+      result.add(new YT_API(jsonData['items'][i]));
     }
     page++;
     if (total == 0) {
@@ -84,14 +99,17 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
+<<<<<<< HEAD
     if(jsonData['pageInfo']['totalResults'] == null) return [];
+=======
+    if (jsonData == null) return [];
+>>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
     api.setPrevPageToken(prevPageToken);
-    int total =
-    jsonData['pageInfo']['totalResults'] <
-        jsonData['pageInfo']['resultsPerPage']
+    int total = jsonData['pageInfo']['totalResults'] <
+            jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
     for (int i = 0; i < total; i++) {
@@ -126,15 +144,21 @@ class YoutubeAPI {
   set setType(String type) => api.Type = type;
 
   String get getType => api.Type;
-
 }
 
 //To Reduce import
 // I added this here
 class YT_API {
   dynamic thumbnail;
-  String kind, id, publishedAt, channelId,channelurl, title, description,
-      channelTitle, url;
+  String kind,
+      id,
+      publishedAt,
+      channelId,
+      channelurl,
+      title,
+      description,
+      channelTitle,
+      url;
 
   YT_API(dynamic data) {
     thumbnail = {
