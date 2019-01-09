@@ -35,7 +35,7 @@ class YoutubeAPI {
     Uri url = api.searchUri(query, Type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    if(jsonData == null) return [];
+    if(jsonData['pageInfo']['totalResults'] == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     api.setNextPageToken(nextPageToken);
     int total =
@@ -57,7 +57,7 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    if(jsonData == null) return [];
+    if(jsonData['pageInfo']['totalResults'] == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
@@ -84,7 +84,7 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    if(jsonData == null) return [];
+    if(jsonData['pageInfo']['totalResults'] == null) return [];
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
@@ -144,6 +144,8 @@ class YT_API {
     };
     kind = data['id']['kind'].substring(8);
     id = data['id'][data['id'].keys.elementAt(1)];
+    print(data['id'].keys.elementAt(1));
+    print(id);
     url = getURL(kind, id);
     publishedAt = data['snippet']['publishedAt'];
     channelId = data['snippet']['channelId'];

@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> {
-  static String key = 'YOUTUBE_API_KEY';
+  static String key = 'AIzaSyC4aK3kXyFbOrirOyxiUzrpNmXBEDYMVZ0';
   YoutubeAPI ytApi = new YoutubeAPI(key);
   List<YT_API> ytResult = [];
 
@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
-    call_API();
     return new MaterialApp(
       home: new Scaffold(
           appBar: new AppBar(
@@ -70,7 +69,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 new Padding(padding: EdgeInsets.only(bottom: 3.0)),
                 new Text(
-                  ytResult[index].description,
+                  ytResult[index].url,
                   softWrap: true,
                 ),
               ]
