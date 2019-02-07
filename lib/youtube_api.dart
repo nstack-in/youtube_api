@@ -30,9 +30,7 @@ class YoutubeAPI {
     Uri url = api.searchUri(query, Type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-<<<<<<< HEAD
     if(jsonData['pageInfo']['totalResults'] == null) return [];
-=======
     List<YT_API> result = _getResultFromJson(jsonData);
     return result;
   }
@@ -49,7 +47,7 @@ class YoutubeAPI {
   List<YT_API> _getResultFromJson(jsonData) {
     List<YT_API> result = [];
     if (jsonData == null) return [];
->>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
+
     nextPageToken = jsonData['nextPageToken'];
     api.setNextPageToken(nextPageToken);
     int total = jsonData['pageInfo']['totalResults'] <
@@ -70,11 +68,11 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-<<<<<<< HEAD
+
     if(jsonData['pageInfo']['totalResults'] == null) return [];
-=======
+
     if (jsonData == null) return [];
->>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
+
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
@@ -99,11 +97,11 @@ class YoutubeAPI {
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-<<<<<<< HEAD
+
     if(jsonData['pageInfo']['totalResults'] == null) return [];
-=======
+
     if (jsonData == null) return [];
->>>>>>> 4d6dc081a3fa755950dc0e1aff68531dd6650bca
+
     nextPageToken = jsonData['nextPageToken'];
     prevPageToken = jsonData['prevPageToken'];
     api.setNextPageToken(nextPageToken);
