@@ -10,15 +10,15 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> {
-  static String key; // ** ENTER YOUTUBE API KEY HERE **
+  static String key = "YOUR API KEY";// ** ENTER YOUTUBE API KEY HERE **
 
   YoutubeAPI ytApi = new YoutubeAPI(key);
   List<YT_API> ytResult = [];
 
-  call_API() async {
+  callAPI() async {
     print('UI callled');
     String query = "FLUTTER";
-    ytResult = await ytApi.Search(query);
+    ytResult = await ytApi.search(query);
     setState(() {
       print('UI Updated');
     });
@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    call_API();
+    callAPI();
     print('hello');
   }
   @override
@@ -39,13 +39,13 @@ class _MyAppState extends State<MyApp> {
           body: new Container(
             child: ListView.builder(
                 itemCount: ytResult.length,
-                itemBuilder: (_, int index) => ListItem(index)
+                itemBuilder: (_, int index) => listItem(index)
             ),
           )
       ),
     );
   }
-  Widget ListItem(index){
+  Widget listItem(index){
     return new Card(
       child: new Container(
         margin: EdgeInsets.symmetric(vertical: 7.0),

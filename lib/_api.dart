@@ -1,44 +1,44 @@
 class API {
-  String Key;
+  String key;
   int maxResults;
   String order;
   String safeSearch;
-  String Type;
+  String type;
   String videoDuration;
   String nextPageToken;
   String prevPageToken;
   String query;
   Object options;
-  static String base_url = 'www.googleapis.com';
+  static String baseURL = 'www.googleapis.com';
 
-  API({this.Key, this.Type, this.maxResults, this.query});
+  API({this.key, this.type, this.maxResults, this.query});
 
-  Uri searchUri(query, {String Type}) {
+  Uri searchUri(query, {String type}) {
     this.query = query;
-    this.Type = Type ?? this.Type;
+    this.type = type ?? this.type;
     var options = getOption();
-    Uri url = new Uri.https(base_url, "youtube/v3/search", options);
+    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
 
   Uri channelUri(String channelId, String order) {
     this.order = order ?? 'date';
     var options = getChannelOption(channelId, this.order);
-    Uri url = new Uri.https(base_url, "youtube/v3/search", options);
+    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
 
 //  For Getting Getting Next Page
   Uri nextPageUri() {
     var options = getOptions("pageToken", nextPageToken);
-    Uri url = new Uri.https(base_url, "youtube/v3/search", options);
+    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
 
 //  For Getting Getting Next Page
   Uri prevPageUri() {
     var options = getOptions("pageToken", prevPageToken);
-    Uri url = new Uri.https(base_url, "youtube/v3/search", options);
+    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
 
@@ -48,8 +48,8 @@ class API {
       "q": "${this.query}",
       "part": "snippet",
       "maxResults": "${this.maxResults}",
-      "key": "${this.Key}",
-      "type": "${this.Type}"
+      "key": "${this.key}",
+      "type": "${this.type}"
     };
     return options;
   }
@@ -59,8 +59,8 @@ class API {
       "q": "${this.query}",
       "part": "snippet",
       "maxResults": "${this.maxResults}",
-      "key": "${this.Key}",
-      "type": "${this.Type}"
+      "key": "${this.key}",
+      "type": "${this.type}"
     };
     return options;
   }
@@ -71,7 +71,7 @@ class API {
       "part": "snippet",
       'order': this.order,
       "maxResults": "${this.maxResults}",
-      "key": "${this.Key}",
+      "key": "${this.key}",
     };
     return options;
   }

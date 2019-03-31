@@ -7,9 +7,9 @@ import 'package:youtube_api/_api.dart';
 
 class YoutubeAPI {
   static const MethodChannel _channel = const MethodChannel('youtube_api');
-  String Key;
-  String Type;
-  String Query;
+  String key;
+  String type;
+  String query;
   String prevPageToken;
   String nextPageToken;
   int maxResults;
@@ -17,26 +17,30 @@ class YoutubeAPI {
   int page;
 
 //  Constructor
-  YoutubeAPI(this.Key, {String type, int maxResults: 10}) {
+  YoutubeAPI(this.key, {String type, int maxResults: 10}) {
     page = 0;
-    this.Type = type;
+    this.type = type;
     this.maxResults = maxResults;
-    api = new API(Key: this.Key, maxResults: this.maxResults, Type: this.Type);
+    api = new API(key: this.key, maxResults: this.maxResults, type: this.type);
   }
 
 //  For Searching on YouTube
-  Future<List> Search(String query, {String type}) async {
-    this.Query = query;
-    Uri url = api.searchUri(query, Type: type);
+  Future<List> search(String query, {String type}) async {
+    this.query = query;
+    Uri url = api.searchUri(query, type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    if(jsonData['pageInfo']['totalResults'] == null) return [];
+    if (jsonData['error'] != null){
+      print(jsonData['error']);
+      return [];
+    }
+    if (jsonData['pageInfo']['totalResults'] == null) return [];
     List<YT_API> result = _getResultFromJson(jsonData);
     return result;
   }
 
 // For getting all videos from youtube channel
-  Future<List> Channel(String channelId, {String order}) async {
+  Future<List> channel(String channelId, {String order}) async {
     Uri url = api.channelUri(channelId, order);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
@@ -62,14 +66,14 @@ class YoutubeAPI {
   }
 
 // To go on Next Page
-  Future<List> NextPage() async {
+  Future<List> nextPage() async {
     List<YT_API> result = [];
     Uri url = api.nextPageUri();
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
 
-    if(jsonData['pageInfo']['totalResults'] == null) return [];
+    if (jsonData['pageInfo']['totalResults'] == null) return [];
 
     if (jsonData == null) return [];
 
@@ -91,14 +95,14 @@ class YoutubeAPI {
     return result;
   }
 
-  Future<List> PrevPage() async {
+  Future<List> prevPage() async {
     List<YT_API> result = [];
     Uri url = api.nextPageUri();
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
 
-    if(jsonData['pageInfo']['totalResults'] == null) return [];
+    if (jsonData['pageInfo']['totalResults'] == null) return [];
 
     if (jsonData == null) return [];
 
@@ -129,9 +133,9 @@ class YoutubeAPI {
   get getmaxResults => this.maxResults;
 
 //  Getter and Setter Key
-  set setKey(String Key) => api.Key = Key;
+  set setKey(String key) => api.key = key;
 
-  String get getKey => api.Key;
+  String get getKey => api.key;
 
 //  Getter and Setter for query
   set setQuery(String query) => api.query = query;
@@ -139,9 +143,9 @@ class YoutubeAPI {
   String get getQuery => api.query;
 
 //  Getter and Setter for type
-  set setType(String type) => api.Type = type;
+  set setType(String type) => api.type = type;
 
-  String get getType => api.Type;
+  String get getType => api.type;
 }
 
 //To Reduce import
@@ -171,25 +175,25 @@ class YT_API {
     url = getURL(kind, id);
     publishedAt = data['snippet']['publishedAt'];
     channelId = data['snippet']['channelId'];
-    channelurl = "https://www.youtube.com/channel/${channelId}";
+    channelurl = "https://www.youtube.com/channel/$channelId";
     title = data['snippet']['title'];
     description = data['snippet']['description'];
     channelTitle = data['snippet']['channelTitle'];
   }
 
   String getURL(String kind, String id) {
-    String base_url = "https://www.youtube.com/";
+    String baseURL = "https://www.youtube.com/";
     switch (kind) {
       case 'channel':
-        return "${base_url}watch?v=${id}";
+        return "$baseURL watch?v=$id";
         break;
       case 'video':
-        return "${base_url}watch?v=${id}";
+        return "$baseURL watch?v=$id";
         break;
       case 'playlist':
-        return "${base_url}watch?v=${id}";
+        return "$baseURL watch?v=$id";
         break;
     }
-    return base_url;
+    return baseURL;
   }
 }
