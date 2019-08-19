@@ -8,6 +8,7 @@ class API {
   String nextPageToken;
   String prevPageToken;
   String query;
+  String channelId;
   Object options;
   static String baseURL = 'www.googleapis.com';
 
@@ -16,6 +17,7 @@ class API {
   Uri searchUri(query, {String type}) {
     this.query = query;
     this.type = type ?? this.type;
+    this.channelId = null;
     var options = getOption();
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
@@ -23,6 +25,7 @@ class API {
 
   Uri channelUri(String channelId, String order) {
     this.order = order ?? 'date';
+    this.channelId = channelId;
     var options = getChannelOption(channelId, this.order);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
@@ -30,14 +33,14 @@ class API {
 
 //  For Getting Getting Next Page
   Uri nextPageUri() {
-    var options = getOptions("pageToken", nextPageToken);
+    var options = this.channelId == null ? getOptions("pageToken", nextPageToken) : getChannelPageOption(channelId, "pageToken", nextPageToken);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
 
-//  For Getting Getting Next Page
+//  For Getting Getting Previous Page
   Uri prevPageUri() {
-    var options = getOptions("pageToken", prevPageToken);
+    var options = this.channelId == null ? getOptions("pageToken", prevPageToken) : getChannelPageOption(channelId, "pageToken", prevPageToken);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
@@ -70,6 +73,17 @@ class API {
       'channelId': channelId,
       "part": "snippet",
       'order': this.order,
+      "maxResults": "${this.maxResults}",
+      "key": "${this.key}",
+    };
+    return options;
+  }
+
+  Object getChannelPageOption(String channelId, String key, String value) {
+    Object options = {
+      key: value,
+      'channelId': channelId,
+      "part": "snippet",
       "maxResults": "${this.maxResults}",
       "key": "${this.key}",
     };
