@@ -31,6 +31,14 @@ class API {
     return url;
   }
 
+  Uri videoUri(List<String> videoId) {
+    int length = videoId.length;
+    String videoIds = videoId.join(',');
+    var options = getVideoOption(videoIds, length);
+    Uri url = new Uri.https(baseURL, "youtube/v3/videos", options);
+    return url;
+  }
+
 //  For Getting Getting Next Page
   Uri nextPageUri() {
     var options = this.channelId == null ? getOptions("pageToken", nextPageToken) : getChannelPageOption(channelId, "pageToken", nextPageToken);
@@ -85,6 +93,16 @@ class API {
       'channelId': channelId,
       "part": "snippet",
       "maxResults": "${this.maxResults}",
+      "key": "${this.key}",
+    };
+    return options;
+  }
+
+  Object getVideoOption(String videoIds, int length) {
+    Object options = {
+      "part": "contentDetails",
+      "id": videoIds,
+      "maxResults": "$length",
       "key": "${this.key}",
     };
     return options;

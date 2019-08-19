@@ -30,12 +30,12 @@ class YoutubeAPI {
     Uri url = api.searchUri(query, type: type);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    if (jsonData['error'] != null){
+    if (jsonData['error'] != null) {
       print(jsonData['error']);
       return [];
     }
     if (jsonData['pageInfo']['totalResults'] == null) return [];
-    List<YT_API> result = _getResultFromJson(jsonData);
+    List<YT_API> result = await _getResultFromJson(jsonData);
     return result;
   }
 
@@ -44,29 +44,73 @@ class YoutubeAPI {
     Uri url = api.channelUri(channelId, order);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
-    List<YT_API> result = _getResultFromJson(jsonData);
+    if (jsonData['error'] != null) {
+      print(jsonData['error']);
+      return [];
+    }
+    if (jsonData['pageInfo']['totalResults'] == null) return [];
+    List<YT_API> result = await _getResultFromJson(jsonData);
     return result;
   }
 
-  List<YT_API> _getResultFromJson(jsonData) {
+  /*
+  Get video details from video Id
+   */
+  Future<List<YT_VIDEO>> video(List<String> videoId) async {
+    List<YT_VIDEO> result = [];
+    Uri url = api.videoUri(videoId);
+    var res = await http.get(url, headers: {"Accept": "application/json"});
+    var jsonData = json.decode(res.body);
+
+    if (jsonData == null) return [];
+
+    int total = jsonData['pageInfo']['totalResults'] <
+        jsonData['pageInfo']['resultsPerPage']
+        ? jsonData['pageInfo']['totalResults']
+        : jsonData['pageInfo']['resultsPerPage'];
+
+    for (int i = 0; i < total; i++) {
+      result.add(new YT_VIDEO(jsonData['items'][i]));
+    }
+    return result;
+  }
+
+  Future<List<YT_API>> _getResultFromJson(jsonData) async {
     List<YT_API> result = [];
     if (jsonData == null) return [];
 
     nextPageToken = jsonData['nextPageToken'];
     api.setNextPageToken(nextPageToken);
     int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
+        jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
-    for (int i = 0; i < total; i++) {
-      result.add(new YT_API(jsonData['items'][i]));
-    }
+    result = await _getListOfYTAPIs(jsonData, total);
     page = 1;
+    return result;
+  }
+
+  Future<List<YT_API>> _getListOfYTAPIs(dynamic data, int total) async {
+    List<YT_API> result = [];
+    List<String> videoIdList = [];
+    for (int i = 0; i < total; i++) {
+      YT_API ytApiObj = new YT_API(data['items'][i]);
+      if(ytApiObj.kind == "video")
+        videoIdList.add(ytApiObj.id);
+      result.add(ytApiObj);
+    }
+    List<YT_VIDEO> videoList = await video(videoIdList);
+    await Future.forEach(videoList, (YT_VIDEO ytVideo) {
+      YT_API ytAPIObj = result.singleWhere((ytAPI) => ytAPI.id == ytVideo.id, orElse: () => null);
+      ytAPIObj.duration = _getDuration(ytVideo?.duration ?? "") ?? "";
+    });
     return result;
   }
 
 // To go on Next Page
   Future<List> nextPage() async {
+    if(api.nextPageToken == null)
+      return null;
     List<YT_API> result = [];
     Uri url = api.nextPageUri();
     print(url);
@@ -82,12 +126,10 @@ class YoutubeAPI {
     api.setNextPageToken(nextPageToken);
     api.setPrevPageToken(prevPageToken);
     int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
+        jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
-    for (int i = 0; i < total; i++) {
-      result.add(new YT_API(jsonData['items'][i]));
-    }
+    result = await _getListOfYTAPIs(jsonData, total);
     page++;
     if (total == 0) {
       return null;
@@ -96,8 +138,10 @@ class YoutubeAPI {
   }
 
   Future<List> prevPage() async {
+    if(api.prevPageToken == null)
+      return null;
     List<YT_API> result = [];
-    Uri url = api.nextPageUri();
+    Uri url = api.prevPageUri();
     print(url);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
@@ -111,12 +155,10 @@ class YoutubeAPI {
     api.setNextPageToken(nextPageToken);
     api.setPrevPageToken(prevPageToken);
     int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
+        jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
-    for (int i = 0; i < total; i++) {
-      result.add(new YT_API(jsonData['items'][i]));
-    }
+    result = await _getListOfYTAPIs(jsonData, total);
     if (total == 0) {
       return null;
     }
@@ -148,6 +190,40 @@ class YoutubeAPI {
   String get getType => api.type;
 }
 
+String _getDuration(String duration){
+  if(duration.isEmpty) return null;
+  duration = duration.replaceFirst("PT", "");
+
+  var validDuration = ["H", "M", "S"];
+  if(!duration.contains(new RegExp(r'[HMS]'))){
+    return null;
+  }
+  var hour = 0, min = 0, sec = 0;
+  for(int i = 0; i< validDuration.length; i++){
+    var index = duration.indexOf(validDuration[i]);
+    if(index != -1){
+      var valInString = duration.substring(0, index);
+      var val = int.parse(valInString);
+      if(i == 0) hour = val;
+      else if(i == 1) min = val;
+      else if(i == 2) sec = val;
+      duration = duration.substring(valInString.length + 1);
+    }
+  }
+  List buff = [];
+  if(hour != 0){
+    buff.add(hour);
+  }
+  if(min == 0){
+    if(hour != 0) buff.add(min.toString().padLeft(2,'0'));
+  } else {
+    buff.add(min.toString().padLeft(2,'0'));
+  }
+  buff.add(sec.toString().padLeft(2,'0'));
+
+  return buff.join(":");
+}
+
 //To Reduce import
 // I added this here
 class YT_API {
@@ -160,7 +236,8 @@ class YT_API {
       title,
       description,
       channelTitle,
-      url;
+      url,
+      duration;
 
   YT_API(dynamic data) {
     thumbnail = {
@@ -195,5 +272,15 @@ class YT_API {
         break;
     }
     return baseURL;
+  }
+}
+
+class YT_VIDEO {
+  String duration;
+  String id;
+
+  YT_VIDEO(dynamic data) {
+    id = data['id'];
+    duration = data['contentDetails']['duration'];
   }
 }
