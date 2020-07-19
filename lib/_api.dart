@@ -10,9 +10,17 @@ class API {
   String query;
   String channelId;
   Object options;
+  String regionCode;
   static String baseURL = 'www.googleapis.com';
 
   API({this.key, this.type, this.maxResults, this.query});
+
+  Uri trendingUri({String regionCode}) {
+    this.regionCode = regionCode;
+    var options = getTrendingOption(this.regionCode);
+    Uri url = new Uri.https(baseURL, "youtube/v3/videos", options);
+    return url;
+  }
 
   Uri searchUri(query, {String type}) {
     this.query = query;
@@ -40,17 +48,57 @@ class API {
   }
 
 //  For Getting Getting Next Page
-  Uri nextPageUri() {
-    var options = this.channelId == null ? getOptions("pageToken", nextPageToken) : getChannelPageOption(channelId, "pageToken", nextPageToken);
-    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
+  Uri nextPageUri(bool getTrending) {
+    Uri url;
+    if (getTrending) {
+      var options = this.getTrendingPageOption("pageToken", nextPageToken);
+      url = new Uri.https(baseURL, "youtube/v3/videos", options);
+    } else {
+      var options = this.channelId == null
+          ? getOptions("pageToken", nextPageToken)
+          : getChannelPageOption(channelId, "pageToken", nextPageToken);
+      url = new Uri.https(baseURL, "youtube/v3/search", options);
+    }
     return url;
   }
 
 //  For Getting Getting Previous Page
-  Uri prevPageUri() {
-    var options = this.channelId == null ? getOptions("pageToken", prevPageToken) : getChannelPageOption(channelId, "pageToken", prevPageToken);
-    Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
+  Uri prevPageUri(bool getTrending) {
+    Uri url;
+    if (getTrending) {
+      var options = this.getTrendingPageOption("pageToken", prevPageToken);
+      url = new Uri.https(baseURL, "youtube/v3/videos", options);
+    } else {
+      var options = this.channelId == null
+          ? getOptions("pageToken", prevPageToken)
+          : getChannelPageOption(channelId, "pageToken", prevPageToken);
+      url = new Uri.https(baseURL, "youtube/v3/search", options);
+    }
     return url;
+  }
+
+  Object getTrendingOption(String regionCode) {
+    this.regionCode = regionCode;
+    Object options = {
+      "part": "snippet",
+      "chart": "mostPopular",
+      "maxResults": "${this.maxResults}",
+      "regionCode": "${this.regionCode}",
+      "key": "${this.key}",
+    };
+    return options;
+  }
+
+  Object getTrendingPageOption(String key, String value) {
+    Object options = {
+      key: value,
+      "part": "snippet",
+      "chart": "mostPopular",
+      "maxResults": "${this.maxResults}",
+      "regionCode": "${this.regionCode}",
+      "key": "${this.key}",
+    };
+    return options;
   }
 
   Object getOptions(String key, String value) {
