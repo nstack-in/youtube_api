@@ -274,7 +274,6 @@ class YT_API {
       kind = data['id']['kind'].substring(8);
       id = data['id'][data['id'].keys.elementAt(1)];
     }
-    print(data['id'].keys.elementAt(1));
     print(id);
     url = getURL(kind, id);
     publishedAt = data['snippet']['publishedAt'];
