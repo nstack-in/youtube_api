@@ -21,7 +21,7 @@ class _DemoAppState extends State<DemoApp> {
   static String key = "AIzaSyCqkyrnQZw4lXouhkINlkXd-2NBXGVaYe8";
 
   YoutubeAPI ytApi = YoutubeAPI(key);
-  List<YT_API> ytResult = [];
+  List<YouTubeResult> ytResult = [];
 
   callAPI() async {
     String query = "Java";
