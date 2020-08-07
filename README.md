@@ -7,6 +7,7 @@ A Flutter plugin for fetching interacting with Youtube Server to fetch data usin
 ## Features:
 
 * Search Video, Playlist, Channel on youtube.
+* Get Trending Videos based on region code.
 * Play Youtube Video [Coming Soon]
 
 ## Usage
@@ -17,16 +18,30 @@ To use this plugin, add `youtube_api` as a [dependency in your pubspec.yaml file
 ### Example
 
 ![alt text](https://raw.githubusercontent.com/nitishk72/youtube_api/master/demo.png)
+
+
 ``` dart
 
 static String key = 'YOUR_API_KEY';
 YoutubeAPI ytApi = new YoutubeAPI(key);
 List<YT_API> ytResult = [];
+```
 
+To search for videos or Channels-
+``` dart
 String query = "Flutter";
-ytResult = await ytApi.Search(query);
+ytResult = await ytApi.search(query);
 // data which are available in ytResult are shown below 
 ```
+To get Trending videos in your Country-
+``` dart
+regionCode='YOUR_COUNTRY_REGION_CODE(apha-2)'; 
+ytResult = await ytApi.getTrends(regionCode);
+//make sure you assign alpha-2 region code
+```
+[You can find your Country Region Code here](https://www.iso.org/obp/ui/#search/code/)
+
+
 These data are stored in ytResult
 ```json
 [
@@ -60,13 +75,10 @@ These data are stored in ytResult
     },
     {
       "kind": "video"
-       // Here will you next result
+       // Data for your next result in a similar way
     },
     {
-       // Here will you next result
-    },
-    {
-       // Here will you next result
+       // Data for your next result in a similar way
         "url":"https://www.youtube.com/watch?v=9vzd289Eedk"
     }
  ]
