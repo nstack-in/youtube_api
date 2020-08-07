@@ -1,4 +1,4 @@
-class YT_API {
+class YouTubeResult {
   dynamic thumbnail;
   String kind,
       id,
@@ -11,7 +11,7 @@ class YT_API {
       url,
       duration;
 
-  YT_API(dynamic data, {bool getTrendingVideo: false}) {
+  YouTubeResult(dynamic data, {bool getTrendingVideo: false}) {
     thumbnail = {
       'default': data['snippet']['thumbnails']['default'],
       'medium': data['snippet']['thumbnails']['medium'],

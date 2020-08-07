@@ -104,7 +104,7 @@ int max = 25;
 
 String type = "channel";
 
-YoutubeAPI ytApi = new YoutubeAPI(key, maxResults: max, Type: type);
+YouTubeAPI ytApi = new YouTubeAPI(key, maxResults: max, type: YTResultType.channel);
 
 ```
 
