@@ -1,80 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_api/youtube_api.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DemoApp(),
+    );
+  }
 }
 
+class DemoApp extends StatefulWidget {
+  @override
+  _DemoAppState createState() => _DemoAppState();
+}
 
-class _MyAppState extends State<MyApp> {
-  static String key = "YOUR API KEY";// ** ENTER YOUTUBE API KEY HERE **
+class _DemoAppState extends State<DemoApp> {
+  static String key = "AIzaSyCqkyrnQZw4lXouhkINlkXd-2NBXGVaYe8";
 
-  YoutubeAPI ytApi = new YoutubeAPI(key);
+  YoutubeAPI ytApi = YoutubeAPI(key);
   List<YT_API> ytResult = [];
 
   callAPI() async {
-    print('UI callled');
-    String query = "FLUTTER";
+    String query = "Java";
     ytResult = await ytApi.search(query);
-    setState(() {
-      print('UI Updated');
-    });
+    ytResult = await ytApi.nextPage();
+    setState(() {});
   }
+
   @override
   void initState() {
     super.initState();
     callAPI();
     print('hello');
   }
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-          appBar: new AppBar(
-            title: Text('Youtube API'),
-          ),
-          body: new Container(
-            child: ListView.builder(
-                itemCount: ytResult.length,
-                itemBuilder: (_, int index) => listItem(index)
-            ),
-          )
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Youtube API'),
+      ),
+      body: Container(
+        child: ListView.builder(
+          itemCount: ytResult.length,
+          itemBuilder: (_, int index) => listItem(index),
+        ),
       ),
     );
   }
-  Widget listItem(index){
-    return new Card(
-      child: new Container(
+
+  Widget listItem(index) {
+    return Card(
+      child: Container(
         margin: EdgeInsets.symmetric(vertical: 7.0),
         padding: EdgeInsets.all(12.0),
-        child:new Row(
+        child: Row(
           children: <Widget>[
-            new Image.network(ytResult[index].thumbnail['default']['url'],),
-            new Padding(padding: EdgeInsets.only(right: 20.0)),
-            new Expanded(child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(
-                  ytResult[index].title,
-                  softWrap: true,
-                  style: TextStyle(fontSize:18.0),
-                ),
-                new Padding(padding: EdgeInsets.only(bottom: 1.5)),
-                new Text(
-                  ytResult[index].channelTitle,
-                  softWrap: true,
-                ),
-                new Padding(padding: EdgeInsets.only(bottom: 3.0)),
-                new Text(
-                  ytResult[index].url,
-                  softWrap: true,
-                ),
-              ]
-            ))
+            Image.network(
+              ytResult[index].thumbnail['default']['url'],
+            ),
+            Padding(padding: EdgeInsets.only(right: 20.0)),
+            Expanded(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                  Text(
+                    ytResult[index].title,
+                    softWrap: true,
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 1.5)),
+                  Text(
+                    ytResult[index].channelTitle,
+                    softWrap: true,
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 3.0)),
+                  Text(
+                    ytResult[index].url,
+                    softWrap: true,
+                  ),
+                ]))
           ],
         ),
       ),
