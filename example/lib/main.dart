@@ -18,7 +18,7 @@ class DemoApp extends StatefulWidget {
 }
 
 class _DemoAppState extends State<DemoApp> {
-  static String key = "AIzaSyCqkyrnQZw4lXouhkINlkXd-2NBXGVaYe8";
+  static String key = "YOUR-API-KEY";
 
   YouTubeAPI ytApi = YouTubeAPI(key);
   List<YouTubeResult> ytResult = [];
@@ -26,7 +26,6 @@ class _DemoAppState extends State<DemoApp> {
   callAPI() async {
     String query = "Java";
     ytResult = await ytApi.search(query, type: YTResultType.channel);
-    ytResult = await ytApi.nextPage();
     setState(() {});
   }
 
