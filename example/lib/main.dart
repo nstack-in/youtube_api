@@ -18,7 +18,7 @@ class DemoApp extends StatefulWidget {
 }
 
 class _DemoAppState extends State<DemoApp> {
-  static String key = "AIzaSyCqkyrnQZw4lXouhkINlkXd-2NBXGVaYe8";
+  static String key = "YOUR-API-KEY";
 
   YoutubeAPI ytApi = YoutubeAPI(key);
   List<YT_API> ytResult = [];

@@ -3,7 +3,6 @@ description:
   YouTubeAPI is a plugin which directly interacts with YouTube server. Supports
   Searching video and playlist.
 version: 0.8.0
-author: NITISH KUMAR SINGH <nitishk2@gmail.com>
 homepage: https://github.com/nitishk72/Youtube_API
 
 dependencies:
