@@ -74,13 +74,35 @@ class _DemoAppState extends State<DemoApp> {
                     style: TextStyle(fontSize: 18.0),
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 1.5)),
-                  Text(
-                    ytResult[index].channelTitle,
-                    softWrap: true,
+                  Row(
+                    children: [
+                      Container(
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            ytResult[index].channelPhotoURL,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          ytResult[index].channelTitle,
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 3.0)),
                   Text(
                     ytResult[index].url,
+                    softWrap: true,
+                  ),
+                  Text(
+                    ytResult[index].subscriberCount+" subscribers . "+ytResult[index].viewCount+" views",
+                    softWrap: true,
+                  ),
+                  Text(
+                    ytResult[index].likeCount+" likes & "+ytResult[index].dislikeCount+" dislikes",
                     softWrap: true,
                   ),
                 ]))

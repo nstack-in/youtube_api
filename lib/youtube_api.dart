@@ -107,7 +107,7 @@ class YoutubeAPI {
     List<String> videoIdList = [];
     for (int i = 0; i < total; i++) {
       YT_API ytApiObj =
-          new YT_API(data['items'][i], getTrendingVideo: getTrending);
+          new YT_API(data['items'][i], api.key,getTrendingVideo: getTrending);
       if (ytApiObj.kind == "video") videoIdList.add(ytApiObj.id);
       result.add(ytApiObj);
     }
