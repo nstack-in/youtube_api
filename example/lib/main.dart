@@ -18,7 +18,7 @@ class DemoApp extends StatefulWidget {
 }
 
 class _DemoAppState extends State<DemoApp> {
-  static String key = "YOUR-API-KEY";
+  static String key = "AIzaSyCZGSLkdbyP2NDQQn7jGG9sMN1MT4zSN1I";
 
   YoutubeAPI ytApi = YoutubeAPI(key);
   List<YT_API> ytResult = [];
@@ -60,7 +60,7 @@ class _DemoAppState extends State<DemoApp> {
         child: Row(
           children: <Widget>[
             Image.network(
-              ytResult[index].thumbnail['default']['url'],
+              ytResult[index].thumbnail?['default']['url'],
             ),
             Padding(padding: EdgeInsets.only(right: 20.0)),
             Expanded(
