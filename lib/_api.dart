@@ -1,28 +1,28 @@
 class API {
-  String key;
-  int maxResults;
-  String order;
-  String safeSearch;
-  String type;
-  String videoDuration;
-  String nextPageToken;
-  String prevPageToken;
-  String query;
-  String channelId;
-  Object options;
-  String regionCode;
+  String? key;
+  int? maxResults;
+  String? order;
+  String? safeSearch;
+  String? type;
+  String? videoDuration;
+  String? nextPageToken;
+  String? prevPageToken;
+  String? query;
+  String? channelId;
+  Map<String,dynamic>? options;
+  String? regionCode;
   static String baseURL = 'www.googleapis.com';
 
   API({this.key, this.type, this.maxResults, this.query});
 
-  Uri trendingUri({String regionCode}) {
+  Uri trendingUri({required String regionCode}) {
     this.regionCode = regionCode;
-    var options = getTrendingOption(this.regionCode);
+    final options = getTrendingOption(regionCode);
     Uri url = new Uri.https(baseURL, "youtube/v3/videos", options);
     return url;
   }
 
-  Uri searchUri(query, {String type}) {
+  Uri searchUri(query, {String? type}) {
     this.query = query;
     this.type = type ?? this.type;
     this.channelId = null;
@@ -31,10 +31,10 @@ class API {
     return url;
   }
 
-  Uri channelUri(String channelId, String order) {
+  Uri channelUri(String channelId, String? order) {
     this.order = order ?? 'date';
     this.channelId = channelId;
-    var options = getChannelOption(channelId, this.order);
+    final options = getChannelOption(channelId, order!);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
@@ -51,12 +51,12 @@ class API {
   Uri nextPageUri(bool getTrending) {
     Uri url;
     if (getTrending) {
-      var options = this.getTrendingPageOption("pageToken", nextPageToken);
+      var options = this.getTrendingPageOption("pageToken", nextPageToken!);
       url = new Uri.https(baseURL, "youtube/v3/videos", options);
     } else {
       var options = this.channelId == null
-          ? getOptions("pageToken", nextPageToken)
-          : getChannelPageOption(channelId, "pageToken", nextPageToken);
+          ? getOptions("pageToken", nextPageToken!)
+          : getChannelPageOption(channelId!, "pageToken", nextPageToken!);
       url = new Uri.https(baseURL, "youtube/v3/search", options);
     }
     return url;
@@ -66,20 +66,20 @@ class API {
   Uri prevPageUri(bool getTrending) {
     Uri url;
     if (getTrending) {
-      var options = this.getTrendingPageOption("pageToken", prevPageToken);
+      var options = this.getTrendingPageOption("pageToken", prevPageToken!);
       url = new Uri.https(baseURL, "youtube/v3/videos", options);
     } else {
-      var options = this.channelId == null
-          ? getOptions("pageToken", prevPageToken)
-          : getChannelPageOption(channelId, "pageToken", prevPageToken);
+      final options = this.channelId == null
+          ? getOptions("pageToken", prevPageToken!)
+          : getChannelPageOption(channelId!, "pageToken", prevPageToken!);
       url = new Uri.https(baseURL, "youtube/v3/search", options);
     }
     return url;
   }
 
-  Object getTrendingOption(String regionCode) {
+  Map<String,dynamic> getTrendingOption(String regionCode) {
     this.regionCode = regionCode;
-    Object options = {
+    Map<String,dynamic> options = {
       "part": "snippet",
       "chart": "mostPopular",
       "maxResults": "${this.maxResults}",
@@ -89,8 +89,8 @@ class API {
     return options;
   }
 
-  Object getTrendingPageOption(String key, String value) {
-    Object options = {
+  Map<String,dynamic> getTrendingPageOption(String key, String value) {
+    Map<String,dynamic> options = {
       key: value,
       "part": "snippet",
       "chart": "mostPopular",
@@ -101,8 +101,8 @@ class API {
     return options;
   }
 
-  Object getOptions(String key, String value) {
-    Object options = {
+  Map<String,dynamic>  getOptions(String key, String value) {
+    Map<String,dynamic>  options = {
       key: value,
       "q": "${this.query}",
       "part": "snippet",
@@ -113,8 +113,8 @@ class API {
     return options;
   }
 
-  Object getOption() {
-    Object options = {
+  Map<String,dynamic> getOption() {
+    Map<String,dynamic> options = {
       "q": "${this.query}",
       "part": "snippet",
       "maxResults": "${this.maxResults}",
@@ -124,8 +124,8 @@ class API {
     return options;
   }
 
-  Object getChannelOption(String channelId, String order) {
-    Object options = {
+  Map<String, dynamic> getChannelOption(String channelId, String order) {
+    Map<String, dynamic> options = {
       'channelId': channelId,
       "part": "snippet",
       'order': this.order,
@@ -135,8 +135,8 @@ class API {
     return options;
   }
 
-  Object getChannelPageOption(String channelId, String key, String value) {
-    Object options = {
+  Map<String,dynamic>  getChannelPageOption(String channelId, String key, String value) {
+    Map<String,dynamic>  options = {
       key: value,
       'channelId': channelId,
       "part": "snippet",
@@ -146,8 +146,8 @@ class API {
     return options;
   }
 
-  Object getVideoOption(String videoIds, int length) {
-    Object options = {
+  Map<String,dynamic>  getVideoOption(String videoIds, int length) {
+    Map<String,dynamic>  options = {
       "part": "contentDetails",
       "id": videoIds,
       "maxResults": "$length",

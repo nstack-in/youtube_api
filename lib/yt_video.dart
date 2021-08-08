@@ -1,15 +1,15 @@
 class YT_API {
-  dynamic thumbnail;
-  String kind,
-      id,
-      publishedAt,
-      channelId,
-      channelurl,
-      title,
-      description,
-      channelTitle,
-      url,
-      duration;
+  Map<String,dynamic>? thumbnail;
+  String? kind;
+  String? id;
+  String? publishedAt;
+  String? channelId;
+  String? channelUrl;
+  late String title;
+  String? description;
+  late String channelTitle;
+  late String url;
+  String? duration;
 
   YT_API(dynamic data, {bool getTrendingVideo: false}) {
     thumbnail = {
@@ -24,11 +24,10 @@ class YT_API {
       kind = data['id']['kind'].substring(8);
       id = data['id'][data['id'].keys.elementAt(1)];
     }
-    print(id);
-    url = getURL(kind, id);
+    url = getURL(kind!, id!);
     publishedAt = data['snippet']['publishedAt'];
     channelId = data['snippet']['channelId'];
-    channelurl = "https://www.youtube.com/channel/$channelId";
+    channelUrl = "https://www.youtube.com/channel/$channelId";
     title = data['snippet']['title'];
     description = data['snippet']['description'];
     channelTitle = data['snippet']['channelTitle'];
@@ -39,21 +38,18 @@ class YT_API {
     switch (kind) {
       case 'channel':
         return "${baseURL}channel/$id";
-        break;
       case 'video':
         return "${baseURL}watch?v=$id";
-        break;
       case 'playlist':
         return "${baseURL}playlist?list=$id";
-        break;
     }
     return baseURL;
   }
 }
 
 class YT_VIDEO {
-  String duration;
-  String id;
+  String? duration;
+  String? id;
 
   YT_VIDEO(dynamic data) {
     id = data['id'];
@@ -61,7 +57,7 @@ class YT_VIDEO {
   }
 }
 
-String getDuration(String duration) {
+String? getDuration(String duration) {
   if (duration.isEmpty) return null;
   duration = duration.replaceFirst("PT", "");
 
