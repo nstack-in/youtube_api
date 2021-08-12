@@ -1,3 +1,10 @@
+## [0.9.6] - August 13th 2020
+
+- Transferred from Nitish Kumar Singh repo to nstack-in repo 
+## [0.9.5] - August 13th 2020
+
+- Bug fixes 
+
 ## [0.9.1] - August 12th 2020
 
 - Improved 

@@ -13,7 +13,7 @@ class YoutubeAPI {
   String? prevPageToken;
   String? nextPageToken;
   int maxResults;
-  API? api;
+  ApiHelper? api;
   int page = 0;
   String? regionCode;
   bool? getTrending;
@@ -25,7 +25,7 @@ class YoutubeAPI {
   }) {
     this.type = type;
     this.maxResults = maxResults;
-    api = API(key: key, maxResults: this.maxResults, type: this.type);
+    api = ApiHelper(key: key, maxResults: this.maxResults, type: this.type);
   }
 
   Future<List<YT_API>> getTrends({
@@ -156,7 +156,7 @@ class YoutubeAPI {
 
   Future<List<YT_API>?> prevPage() async {
     if (api!.prevPageToken == null) return null;
-    List<YT_API>? result = [];
+    List<YT_API> result = [];
     Uri url = api!.prevPageUri(this.getTrending!);
     var res = await http.get(url, headers: {"Accept": "application/json"});
     var jsonData = json.decode(res.body);
@@ -173,23 +173,21 @@ class YoutubeAPI {
             jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
         : jsonData['pageInfo']['resultsPerPage'];
-    result = await _getListOfYTAPIs(jsonData, total);
+    result = await _getListOfYTAPIs(jsonData, total) ?? [];
     if (total == 0) {
       return <YT_API>[];
     }
     page--;
-    return result ?? [];
+    return result ;
   }
 
   int get getPage => page;
 
-  set setmaxResults(int maxResults) => this.maxResults = maxResults;
+  set setMaxResults(int maxResults) => this.maxResults = maxResults;
 
-  get getmaxResults => this.maxResults;
+  get getMaxResults => this.maxResults;
 
   set setKey(String key) => api!.key = key;
-
-  String? get getKey => api!.key;
 
   set setQuery(String query) => api!.query = query;
 

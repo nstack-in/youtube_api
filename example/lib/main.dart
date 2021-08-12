@@ -23,7 +23,7 @@ class _DemoAppState extends State<DemoApp> {
   YoutubeAPI ytApi = YoutubeAPI(key);
   List<YT_API> ytResult = [];
 
-  callAPI() async {
+  Future<void> callAPI() async {
     String query = "Java";
     ytResult = await ytApi.search(query);
     ytResult = await ytApi.nextPage();

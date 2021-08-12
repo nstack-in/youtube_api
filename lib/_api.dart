@@ -1,4 +1,4 @@
-class API {
+class ApiHelper {
   String? key;
   int? maxResults;
   String? order;
@@ -9,11 +9,11 @@ class API {
   String? prevPageToken;
   String? query;
   String? channelId;
-  Map<String,dynamic>? options;
+  Map<String, dynamic>? options;
   String? regionCode;
   static String baseURL = 'www.googleapis.com';
 
-  API({this.key, this.type, this.maxResults, this.query});
+  ApiHelper({this.key, this.type, this.maxResults, this.query});
 
   Uri trendingUri({required String regionCode}) {
     this.regionCode = regionCode;
@@ -77,9 +77,9 @@ class API {
     return url;
   }
 
-  Map<String,dynamic> getTrendingOption(String regionCode) {
+  Map<String, dynamic> getTrendingOption(String regionCode) {
     this.regionCode = regionCode;
-    Map<String,dynamic> options = {
+    Map<String, dynamic> options = {
       "part": "snippet",
       "chart": "mostPopular",
       "maxResults": "${this.maxResults}",
@@ -89,8 +89,8 @@ class API {
     return options;
   }
 
-  Map<String,dynamic> getTrendingPageOption(String key, String value) {
-    Map<String,dynamic> options = {
+  Map<String, dynamic> getTrendingPageOption(String key, String value) {
+    Map<String, dynamic> options = {
       key: value,
       "part": "snippet",
       "chart": "mostPopular",
@@ -101,8 +101,8 @@ class API {
     return options;
   }
 
-  Map<String,dynamic>  getOptions(String key, String value) {
-    Map<String,dynamic>  options = {
+  Map<String, dynamic> getOptions(String key, String value) {
+    Map<String, dynamic> options = {
       key: value,
       "q": "${this.query}",
       "part": "snippet",
@@ -113,8 +113,8 @@ class API {
     return options;
   }
 
-  Map<String,dynamic> getOption() {
-    Map<String,dynamic> options = {
+  Map<String, dynamic> getOption() {
+    Map<String, dynamic> options = {
       "q": "${this.query}",
       "part": "snippet",
       "maxResults": "${this.maxResults}",
@@ -135,8 +135,9 @@ class API {
     return options;
   }
 
-  Map<String,dynamic>  getChannelPageOption(String channelId, String key, String value) {
-    Map<String,dynamic>  options = {
+  Map<String, dynamic> getChannelPageOption(
+      String channelId, String key, String value) {
+    Map<String, dynamic> options = {
       key: value,
       'channelId': channelId,
       "part": "snippet",
@@ -146,8 +147,8 @@ class API {
     return options;
   }
 
-  Map<String,dynamic>  getVideoOption(String videoIds, int length) {
-    Map<String,dynamic>  options = {
+  Map<String, dynamic> getVideoOption(String videoIds, int length) {
+    Map<String, dynamic> options = {
       "part": "contentDetails",
       "id": videoIds,
       "maxResults": "$length",
