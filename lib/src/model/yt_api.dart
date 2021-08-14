@@ -1,3 +1,4 @@
+@Deprecated('Use YoutubeVide class instead of YT_API')
 class YT_API {
   Map<String,dynamic>? thumbnail;
   String? kind;
@@ -46,7 +47,7 @@ class YT_API {
     return baseURL;
   }
 }
-
+@Deprecated('Use Video class instead of YT_VIDEO')
 class YT_VIDEO {
   String? duration;
   String? id;

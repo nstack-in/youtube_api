@@ -23,28 +23,28 @@ To use this plugin, add `youtube_api` as a [dependency in your pubspec.yaml file
 
 static String key = 'YOUR_API_KEY';
 YoutubeAPI ytApi = new YoutubeAPI(key);
-List<YT_API> ytResult = [];
+List<YouTubeVideo> videoResult = [];
 ```
 
 To search for videos or Channels-
 
 ```dart
 String query = "Flutter";
-ytResult = await ytApi.search(query);
-// data which are available in ytResult are shown below
+videoResult = await ytApi.search(query);
+// data which are available in videoResult are shown below
 ```
 
 To get Trending videos in your Country-
 
 ```dart
 regionCode='YOUR_COUNTRY_REGION_CODE(apha-2)';
-ytResult = await ytApi.getTrends(regionCode);
+videoResult = await ytApi.getTrends(regionCode);
 //make sure you assign alpha-2 region code
 ```
 
 [You can find your Country Region Code here](https://www.iso.org/obp/ui/#search/code/)
 
-These data are stored in ytResult
+These data are stored in videoResult
 
 ```json
 [

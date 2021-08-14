@@ -1,4 +1,7 @@
-## [0.9.7] - August 13th 2020
+## [1.0.0] - August 14th 2020
+
+- Version 1 release with some breaking changes. If you read the example/Readme.md then can easily understand them
+## [0.9.7] - August 14th 2020
 
 - Fix for issue/38 [Github]
 ## [0.9.6] - August 13th 2020
