@@ -17,7 +17,7 @@ To use this plugin, add `youtube_api` as a [dependency in your pubspec.yaml file
 
 ### Example
 
-![alt text](https://raw.githubusercontent.com/nstack-in/youtube_api/master/demo.png)
+![alt text](https://raw.githubusercontent.com/nstack-in/youtube_api/master/demo.jpg)
 
 ```dart
 
