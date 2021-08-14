@@ -34,7 +34,7 @@ class ApiHelper {
   Uri channelUri(String channelId, String? order) {
     this.order = order ?? 'date';
     this.channelId = channelId;
-    final options = getChannelOption(channelId, order!);
+    final options = getChannelOption(channelId, this.order!);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }

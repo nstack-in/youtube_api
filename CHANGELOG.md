@@ -1,3 +1,6 @@
+## [0.9.7] - August 13th 2020
+
+- Fix for issue/38 [Github]
 ## [0.9.6] - August 13th 2020
 
 - Transferred from Nitish Kumar Singh repo to nstack-in repo 
