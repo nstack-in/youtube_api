@@ -1,7 +1,7 @@
 name: youtube_api
 description: YouTubeAPI is a plugin which directly interacts with YouTube
   server. Supports Searching video and playlist.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/nstack-in/youtube_api
 repository: https://github.com/nstack-in/youtube_api
 

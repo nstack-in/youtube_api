@@ -1,3 +1,5 @@
+## [1.0.2] - August 14th 2020
+Previous page token issue fixed
 ## [1.0.1] - August 14th 2020
 Added Support for video duration ond sort by and region code for search
 ## [1.0.0] - August 14th 2020

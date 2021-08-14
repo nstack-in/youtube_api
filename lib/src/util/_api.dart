@@ -174,5 +174,5 @@ class ApiHelper {
   }
 
   void setNextPageToken(String token) => this.nextPageToken = token;
-  void setPrevPageToken(String token) => this.nextPageToken = token;
+  void setPrevPageToken(String token) => this.prevPageToken = token;
 }
