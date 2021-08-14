@@ -20,13 +20,17 @@ class DemoApp extends StatefulWidget {
 class _DemoAppState extends State<DemoApp> {
   static String key = "YOUR_API_KEY";
 
-  YoutubeAPI ytApi = YoutubeAPI(key);
+  YoutubeAPI youtube = YoutubeAPI(key);
   List<YouTubeVideo> videoResult = [];
 
   Future<void> callAPI() async {
-    String query = "Java";
-    videoResult = await ytApi.search(query);
-    videoResult = await ytApi.nextPage();
+    String query = "Flutter GraphQL";
+    videoResult = await youtube.search(
+      query,
+      order: 'relevance',
+      videoDuration: 'any',
+    );
+    videoResult = await youtube.nextPage();
     setState(() {});
   }
 

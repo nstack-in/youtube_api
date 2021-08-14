@@ -22,11 +22,27 @@ class ApiHelper {
     return url;
   }
 
-  Uri searchUri(query, {String? type}) {
+  Uri searchUri(
+    String query, {
+    String? type,
+    String? regionCode,
+    required String videoDuration,
+    required String order,
+  }) {
     this.query = query;
     this.type = type ?? this.type;
     this.channelId = null;
-    var options = getOption();
+    final options = {
+      "q": "${this.query}",
+      "part": "snippet",
+      "maxResults": "${this.maxResults}",
+      "key": "${this.key}",
+      "type": "${this.type}",
+      "order": order,
+      "videoDuration": videoDuration,
+    };
+    if (regionCode != null) options['regionCode'] = regionCode;
+    print(options);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }
