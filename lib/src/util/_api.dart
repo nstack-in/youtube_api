@@ -26,6 +26,7 @@ class ApiHelper {
     String query, {
     String? type,
     String? regionCode,
+    String? channelId,
     required String videoDuration,
     required String order,
   }) {
@@ -41,6 +42,7 @@ class ApiHelper {
       "order": order,
       "videoDuration": videoDuration,
     };
+    if (this.channelId != null) options['channelId'] = this.channelId!;
     if (regionCode != null) options['regionCode'] = regionCode;
     print(options);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);

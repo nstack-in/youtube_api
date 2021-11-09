@@ -34,6 +34,15 @@ videoResult = await ytApi.search(query);
 // data which are available in videoResult are shown below
 ```
 
+To search for videos in the specific Channel-
+
+```dart
+String query = "Flutter";
+String channelId = "testChannelId";
+videoResult = await ytApi.search(query, type: "video", channelId: channelId,);
+// data which are available in videoResult are shown below
+```
+
 To get Trending videos in your Country-
 
 ```dart
