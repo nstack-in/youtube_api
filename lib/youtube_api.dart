@@ -85,6 +85,22 @@ class YoutubeAPI {
   }
 
   /*
+   Get YouTubeVideos from video Id
+    */
+  Future<List<YouTubeVideo>> videosById(List<String> videoIds) async {
+    this.getTrending = true;
+    final url = api!.videoUri(videoIds, snippet: true);
+    var res = await http.get(url, headers: headers);
+    var jsonData = json.decode(res.body);
+    if (jsonData['error'] != null) {
+      throw jsonData['error']['message'];
+    }
+    if (jsonData['pageInfo']['totalResults'] == null) return <YouTubeVideo>[];
+    List<YouTubeVideo> result = await _getResultFromJson(jsonData);
+    return result;
+  }
+
+  /*
   Get video details from video Id
    */
   Future<List<Video>> video(List<String> videoId) async {
