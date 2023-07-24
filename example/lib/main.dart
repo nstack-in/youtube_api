@@ -31,6 +31,7 @@ class _DemoAppState extends State<DemoApp> {
       videoDuration: 'any',
     );
     videoResult = await youtube.nextPage();
+    videoResult = await youtube.videosById(["4AoFA19gbLo"]);
     setState(() {});
   }
 

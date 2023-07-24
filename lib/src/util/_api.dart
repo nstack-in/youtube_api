@@ -55,10 +55,10 @@ class ApiHelper {
     return url;
   }
 
-  Uri videoUri(List<String> videoId) {
+  Uri videoUri(List<String> videoId, {bool snippet = false}) {
     int length = videoId.length;
     String videoIds = videoId.join(',');
-    var options = getVideoOption(videoIds, length);
+    var options = getVideoOption(videoIds, length, snippet: snippet);
     Uri url = new Uri.https(baseURL, "youtube/v3/videos", options);
     return url;
   }
@@ -163,9 +163,10 @@ class ApiHelper {
     return options;
   }
 
-  Map<String, dynamic> getVideoOption(String videoIds, int length) {
+  Map<String, dynamic> getVideoOption(String videoIds, int length,
+      {bool snippet = false}) {
     Map<String, dynamic> options = {
-      "part": "contentDetails",
+      "part": snippet ? "snippet" : "contentDetails",
       "id": videoIds,
       "maxResults": "$length",
       "key": "${this.key}",

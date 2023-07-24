@@ -89,7 +89,8 @@ class YoutubeAPI {
     */
   Future<List<YouTubeVideo>> videosById(List<String> videoIds) async {
     this.getTrending = true;
-    final url = api!.videoUri(videoIds);
+    final url = api!.videoUri(videoIds, snippet: true);
+    print(url);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {
@@ -126,7 +127,7 @@ class YoutubeAPI {
     List<YouTubeVideo>? result = [];
     if (jsonData == null) return [];
     nextPageToken = jsonData['nextPageToken'];
-    api!.setNextPageToken(nextPageToken!);
+    if (nextPageToken != null) api!.setNextPageToken(nextPageToken!);
     int total = jsonData['pageInfo']['totalResults'] <
             jsonData['pageInfo']['resultsPerPage']
         ? jsonData['pageInfo']['totalResults']
