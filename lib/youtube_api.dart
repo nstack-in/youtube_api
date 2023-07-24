@@ -47,7 +47,7 @@ class YoutubeAPI {
 
   Future<List<YouTubeVideo>> search(
     String query, {
-    String type =  'video,channel,playlist',
+    String type = 'video,channel,playlist',
     String order = 'relevance',
     String videoDuration = 'any',
     String? regionCode,
@@ -74,6 +74,22 @@ class YoutubeAPI {
   Future<List<YouTubeVideo>> channel(String channelId, {String? order}) async {
     this.getTrending = false;
     final url = api!.channelUri(channelId, order);
+    var res = await http.get(url, headers: headers);
+    var jsonData = json.decode(res.body);
+    if (jsonData['error'] != null) {
+      throw jsonData['error']['message'];
+    }
+    if (jsonData['pageInfo']['totalResults'] == null) return <YouTubeVideo>[];
+    List<YouTubeVideo> result = await _getResultFromJson(jsonData);
+    return result;
+  }
+
+  /*
+   Get YouTubeVideos from video Id
+    */
+  Future<List<YouTubeVideo>> videosById(List<String> videoIds) async {
+    this.getTrending = true;
+    final url = api!.videoUri(videoIds);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {

@@ -13,7 +13,7 @@ class YouTubeVideo {
   late String url;
   String? duration;
 
-  YouTubeVideo(dynamic data, {bool getTrendingVideo: false}) {
+  YouTubeVideo(dynamic data, {bool getTrendingVideo = false}) {
     thumbnail = Thumbnails.fromMap(data['snippet']['thumbnails']);
     if (getTrendingVideo) {
       kind = 'video';

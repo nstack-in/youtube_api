@@ -1,6 +1,6 @@
 @Deprecated('Use YoutubeVide class instead of YT_API')
 class YT_API {
-  Map<String,dynamic>? thumbnail;
+  Map<String, dynamic>? thumbnail;
   String? kind;
   String? id;
   String? publishedAt;
@@ -12,7 +12,7 @@ class YT_API {
   late String url;
   String? duration;
 
-  YT_API(dynamic data, {bool getTrendingVideo: false}) {
+  YT_API(dynamic data, {bool getTrendingVideo = false}) {
     thumbnail = {
       'default': data['snippet']['thumbnails']['default'],
       'medium': data['snippet']['thumbnails']['medium'],
@@ -47,6 +47,7 @@ class YT_API {
     return baseURL;
   }
 }
+
 @Deprecated('Use Video class instead of YT_VIDEO')
 class YT_VIDEO {
   String? duration;

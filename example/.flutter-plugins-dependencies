@@ -1,1 +1,1 @@
-{"info":"This is a generated file; do not edit or check into version control.","plugins":{"ios":[],"android":[],"macos":[],"linux":[],"windows":[],"web":[]},"dependencyGraph":[{"name":"youtube_api","dependencies":[]}],"date_created":"2021-08-14 16:34:46.463184","version":"2.2.0"}
+{"info":"This is a generated file; do not edit or check into version control.","plugins":{"ios":[],"android":[],"macos":[],"linux":[],"windows":[],"web":[]},"dependencyGraph":[{"name":"youtube_api","dependencies":[]}],"date_created":"2023-07-24 09:26:28.686672","version":"3.10.6"}
