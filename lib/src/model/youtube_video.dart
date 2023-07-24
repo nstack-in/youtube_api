@@ -1,4 +1,5 @@
 import 'package:youtube_api/src/model/thumbnails.dart';
+import 'package:youtube_api/src/util/category.dart';
 
 class YouTubeVideo {
   late Thumbnails thumbnail;
@@ -12,9 +13,14 @@ class YouTubeVideo {
   late String channelTitle;
   late String url;
   String? duration;
+  Category? category;
+  late List<String> tags;
 
   YouTubeVideo(dynamic data, {bool getTrendingVideo = false}) {
     thumbnail = Thumbnails.fromMap(data['snippet']['thumbnails']);
+    category = Category.fromCategoryId(
+        int.tryParse(data['snippet']['categoryId'] ?? "") ?? -1);
+    tags = List<String>.from(data['snippet']['tags'] ?? []);
     if (getTrendingVideo) {
       kind = 'video';
       id = data['id'];

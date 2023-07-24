@@ -90,7 +90,6 @@ class YoutubeAPI {
   Future<List<YouTubeVideo>> videosById(List<String> videoIds) async {
     this.getTrending = true;
     final url = api!.videoUri(videoIds, snippet: true);
-    print(url);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {

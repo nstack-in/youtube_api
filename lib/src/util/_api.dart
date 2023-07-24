@@ -42,7 +42,6 @@ class ApiHelper {
       "videoDuration": videoDuration,
     };
     if (regionCode != null) options['regionCode'] = regionCode;
-    print(options);
     Uri url = new Uri.https(baseURL, "youtube/v3/search", options);
     return url;
   }

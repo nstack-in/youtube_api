@@ -91,6 +91,14 @@ class _DemoAppState extends State<DemoApp> {
                     video.url,
                     softWrap: true,
                   ),
+                  Text(
+                    "tags: ${video.tags.join(", ")}",
+                    softWrap: true,
+                  ),
+                  Text(
+                    "category: ${video.category?.name}",
+                    softWrap: true,
+                  ),
                 ],
               ),
             )
