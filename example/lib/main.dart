@@ -18,20 +18,24 @@ class DemoApp extends StatefulWidget {
 }
 
 class _DemoAppState extends State<DemoApp> {
-  static String key = "YOUR_API_KEY";
+  static String _key = "YOUR_API_KEY";
 
-  YoutubeAPI youtube = YoutubeAPI(key);
-  List<YouTubeVideo> videoResult = [];
+  final _youtube = YoutubeAPI(_key);
+  List<YoutubeApiResult> _result = [];
 
   Future<void> callAPI() async {
-    String query = "Flutter GraphQL";
-    videoResult = await youtube.search(
+    String query = "Flutter";
+    _result = await _youtube.search(
       query,
       order: 'relevance',
       videoDuration: 'any',
     );
-    videoResult = await youtube.nextPage();
-    videoResult = await youtube.videosById(["4AoFA19gbLo"]);
+    _result = await _youtube.search(
+      query,
+      type: [YoutubeApiResultKind.channel],
+    );
+    _result = await _youtube.nextPage();
+    _result = await _youtube.videosById(["4AoFA19gbLo"]);
     setState(() {});
   }
 
@@ -50,12 +54,12 @@ class _DemoAppState extends State<DemoApp> {
         title: Text('Youtube API'),
       ),
       body: ListView(
-        children: videoResult.map<Widget>(listItem).toList(),
+        children: _result.map<Widget>(listItem).toList(),
       ),
     );
   }
 
-  Widget listItem(YouTubeVideo video) {
+  Widget listItem(YoutubeApiResult obj) {
     return Card(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 7.0),
@@ -66,7 +70,7 @@ class _DemoAppState extends State<DemoApp> {
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: Image.network(
-                video.thumbnail.small.url ?? '',
+                obj.thumbnail.small.url ?? '',
                 width: 120.0,
               ),
             ),
@@ -75,30 +79,36 @@ class _DemoAppState extends State<DemoApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    video.title,
+                    obj.title,
                     softWrap: true,
                     style: TextStyle(fontSize: 18.0),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 3.0),
                     child: Text(
-                      video.channelTitle,
+                      obj.channelTitle,
                       softWrap: true,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
-                    video.url,
+                    obj.url,
                     softWrap: true,
                   ),
                   Text(
-                    "tags: ${video.tags.join(", ")}",
+                    "tags: ${obj.tags.join(", ")}",
                     softWrap: true,
                   ),
-                  Text(
-                    "category: ${video.category?.name}",
-                    softWrap: true,
-                  ),
+                  if (obj is YouTubeVideo) ...[
+                    Text(
+                      "duration: ${obj.duration}",
+                      softWrap: true,
+                    ),
+                    Text(
+                      "category: ${obj.category?.name}",
+                      softWrap: true,
+                    ),
+                  ]
                 ],
               ),
             )
