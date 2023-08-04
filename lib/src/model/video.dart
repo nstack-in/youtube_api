@@ -1,9 +1,8 @@
-
-class Video {
+class VideoDetails {
   String? duration;
   String? id;
 
-  Video(dynamic data) {
+  VideoDetails(dynamic data) {
     id = data['id'];
     duration = data['contentDetails']['duration'];
   }

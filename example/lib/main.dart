@@ -27,15 +27,19 @@ class _DemoAppState extends State<DemoApp> {
     String query = "Flutter";
     _result = await _youtube.search(
       query,
-      order: 'relevance',
-      videoDuration: 'any',
+      options: SearchOptions(
+        order: Order.relevance,
+        videoDuration: VideoDuration.any,
+      ),
     );
     _result = await _youtube.search(
       query,
-      type: [YoutubeApiResultKind.channel],
+      options: SearchOptions(
+        type: [ResultType.channel],
+      ),
     );
-    _result = await _youtube.nextPage();
-    _result = await _youtube.videosById(["4AoFA19gbLo"]);
+    _result = (await _youtube.nextPage()) ?? [];
+    _result = await _youtube.searchById(["4AoFA19gbLo"]);
     setState(() {});
   }
 

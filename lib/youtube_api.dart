@@ -1,42 +1,42 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:youtube_api/src/model/options.dart';
+import 'package:youtube_api/src/model/search_options.dart';
 import 'package:youtube_api/src/model/video.dart';
+import 'package:youtube_api/src/model/video_options.dart';
 import 'package:youtube_api/src/model/youtube_video.dart';
-import 'package:youtube_api/src/util/_api.dart';
 import 'package:youtube_api/src/util/get_duration.dart';
 
 export 'package:youtube_api/src/enum/category.dart';
+export 'package:youtube_api/src/enum/result_type.dart';
 export 'package:youtube_api/src/model/thumbnails.dart';
 export 'package:youtube_api/src/model/youtube_video.dart';
+export 'package:youtube_api/src/model/options.dart';
+export 'package:youtube_api/src/model/search_options.dart';
+export 'package:youtube_api/src/model/video_options.dart';
 
 class YoutubeAPI {
-  String? type;
-  String? query;
-  String? prevPageToken;
+  late SearchOptions searchOptions;
+  VideoOptions? videoOptions;
+  String key;
   String? nextPageToken;
-  int maxResults;
-  ApiHelper? api;
+  String? prevPageToken;
+  static const baseURL = 'www.googleapis.com';
+  static const searchUnencodedPath = "youtube/v3/search";
   int page = 0;
-  String? regionCode;
-  bool? getTrending;
   final headers = {"Accept": "application/json"};
   YoutubeAPI(
-    String key, {
-    this.type,
-    this.maxResults = 10,
+    this.key, {
+    int maxResults = 10,
   }) {
-    this.type = type;
-    this.maxResults = maxResults;
-    api = ApiHelper(key: key, maxResults: this.maxResults, type: this.type);
+    searchOptions = SearchOptions(maxResults: maxResults);
   }
 
   Future<List<YoutubeApiResult>> getTrends({
     required String regionCode,
   }) async {
-    this.regionCode = regionCode;
-    this.getTrending = true;
-    final url = api!.trendingUri(regionCode: regionCode);
+    final url = _getTrendingVideosUri(regionCode: regionCode);
     final res = await http.get(url, headers: headers);
     final jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {
@@ -44,27 +44,19 @@ class YoutubeAPI {
     }
     if (jsonData['pageInfo']['totalResults'] == null)
       return <YoutubeApiResult>[];
-    final result = await _getResultFromJson(jsonData);
-    return result;
+    return _getResults(jsonData, onlyVideos: true, newPage: 1);
   }
 
   Future<List<YoutubeApiResult>> search(
     String query, {
-    // String type = 'video,channel,playlist',
-    List<YoutubeApiResultKind> type = YoutubeApiResultKind.values,
-    String order = 'relevance',
-    String videoDuration = 'any',
-    String? regionCode,
+    SearchOptions options = const SearchOptions(
+      type: ResultType.values,
+      order: Order.relevance,
+      videoDuration: VideoDuration.any,
+    ),
   }) async {
-    this.getTrending = false;
-    this.query = query;
-    final url = api!.searchUri(
-      query,
-      type: type.map((e) => e.name).join(','),
-      videoDuration: videoDuration,
-      order: order,
-      regionCode: regionCode,
-    );
+    searchOptions = options.copyWith(query: query);
+    final url = _getSearchUri(options: searchOptions);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {
@@ -72,14 +64,12 @@ class YoutubeAPI {
     }
     if (jsonData['pageInfo']['totalResults'] == null)
       return <YoutubeApiResult>[];
-    List<YoutubeApiResult> result = await _getResultFromJson(jsonData);
-    return result;
+    return _getResults(jsonData, newPage: 1);
   }
 
   Future<List<YoutubeApiResult>> channel(String channelId,
-      {String? order}) async {
-    this.getTrending = false;
-    final url = api!.channelUri(channelId, order);
+      {Order? order}) async {
+    final url = _getSearchInChannelUri(channelId, order);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {
@@ -87,33 +77,28 @@ class YoutubeAPI {
     }
     if (jsonData['pageInfo']['totalResults'] == null)
       return <YoutubeApiResult>[];
-    List<YoutubeApiResult> result = await _getResultFromJson(jsonData);
-    return result;
+    return _getResults(jsonData, newPage: 1);
   }
 
-  /*
-   Get YouTubeVideos from video Id
-    */
-  Future<List<YoutubeApiResult>> videosById(List<String> videoIds) async {
-    this.getTrending = true;
-    final url = api!.videoUri(videoIds, snippet: true);
+  /// Get results by ID
+  Future<List<T>> searchById<T extends YoutubeApiResult>(
+      List<String> ids) async {
+    final url = _getVideoUri(ids, part: DataPart.snippet);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
     if (jsonData['error'] != null) {
       throw jsonData['error']['message'];
     }
-    if (jsonData['pageInfo']['totalResults'] == null)
-      return <YoutubeApiResult>[];
-    List<YoutubeApiResult> result = await _getResultFromJson(jsonData);
+    if (jsonData['pageInfo']['totalResults'] == null) return <T>[];
+    final result = List.castFrom<YoutubeApiResult, T>(
+        await _getResults(jsonData, onlyVideos: true, newPage: 1));
     return result;
   }
 
-  /*
-  Get video details from video Id
-   */
-  Future<List<Video>> video(List<String> videoId) async {
-    List<Video> result = [];
-    final url = api!.videoUri(videoId);
+  /// Get video details from video Id
+  Future<List<VideoDetails>> getVideoDetails(List<String> videoId) async {
+    List<VideoDetails> result = [];
+    final url = _getVideoUri(videoId);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
 
@@ -125,37 +110,35 @@ class YoutubeAPI {
         : jsonData['pageInfo']['resultsPerPage'];
 
     for (int i = 0; i < total; i++) {
-      result.add(new Video(jsonData['items'][i]));
+      result.add(new VideoDetails(jsonData['items'][i]));
     }
     return result;
   }
 
-  Future<List<YoutubeApiResult>> _getResultFromJson(jsonData) async {
-    List<YoutubeApiResult>? result = [];
-    if (jsonData == null) return [];
-    nextPageToken = jsonData['nextPageToken'];
-    if (nextPageToken != null) api!.setNextPageToken(nextPageToken!);
-    int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
-        ? jsonData['pageInfo']['totalResults']
-        : jsonData['pageInfo']['resultsPerPage'];
-    result = await _getListOfYTAPIs(jsonData, total);
-    page = 1;
-    return result ?? [];
-  }
+  Future<List<YoutubeApiResult>> _getResults(dynamic data,
+      {bool onlyVideos = false, int? newPage}) async {
+    if (newPage != null) page = newPage;
+    if (data['pageInfo']['totalResults'] == null) return [];
 
-  Future<List<YoutubeApiResult>?> _getListOfYTAPIs(
-      dynamic data, int total) async {
-    List<YoutubeApiResult> result = [];
+    if (data == null) return <YoutubeApiResult>[];
+
+    nextPageToken = data['nextPageToken'];
+    prevPageToken = data['prevPageToken'];
+    int total =
+        data['pageInfo']['totalResults'] < data['pageInfo']['resultsPerPage']
+            ? data['pageInfo']['totalResults']
+            : data['pageInfo']['resultsPerPage'];
+
+    final result = <YoutubeApiResult>[];
     for (int i = 0; i < total; i++) {
-      YoutubeApiResult ytApiObj = YoutubeApiResult.fromMap(data['items'][i],
-          isSingleResult: getTrending!);
+      YoutubeApiResult ytApiObj =
+          YoutubeApiResult.fromMap(data['items'][i], onlyVideos: onlyVideos);
       result.add(ytApiObj);
     }
     final videoIdList =
         result.whereType<YouTubeVideo>().map((e) => e.id).toList();
 
-    List<Video> videoList = await video(videoIdList);
+    final videoList = await getVideoDetails(videoIdList);
     for (final ytVideo in videoList) {
       final ytAPIObj =
           result.firstWhere((ytAPI) => ytAPI.id == ytVideo.id) as YouTubeVideo;
@@ -164,76 +147,107 @@ class YoutubeAPI {
     return result;
   }
 
-  Future<List<YoutubeApiResult>> nextPage() async {
-    this.getTrending = false;
-    if (api!.nextPageToken == null) return [];
-    List<YoutubeApiResult>? result = [];
-    final url = api!.nextPageUri(this.getTrending!);
+  Future<List<YoutubeApiResult>?> prevPage(
+      {bool isTrendingVideos = false}) async {
+    if (prevPageToken == null) return null;
+    final url = _getPrevPageUri(onlyVideos: isTrendingVideos);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
 
-    if (jsonData['pageInfo']['totalResults'] == null)
-      return <YoutubeApiResult>[];
-
-    if (jsonData == null) return <YoutubeApiResult>[];
-
-    nextPageToken = jsonData['nextPageToken'];
-    prevPageToken = jsonData['prevPageToken'];
-    api!.setNextPageToken(nextPageToken!);
-    api!.setPrevPageToken(prevPageToken!);
-    int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
-        ? jsonData['pageInfo']['totalResults']
-        : jsonData['pageInfo']['resultsPerPage'];
-    result = await _getListOfYTAPIs(jsonData, total);
-    page++;
-    if (total == 0) {
-      return <YoutubeApiResult>[];
-    }
-    return result ?? [];
+    return _getResults(jsonData,
+        onlyVideos: isTrendingVideos, newPage: page - 1);
   }
 
-  Future<List<YoutubeApiResult>?> prevPage() async {
-    if (api!.prevPageToken == null) return null;
-    List<YoutubeApiResult> result = [];
-    final url = api!.prevPageUri(this.getTrending!);
+  Future<List<YoutubeApiResult>?> nextPage(
+      {bool isTrendingVideos = false}) async {
+    if (nextPageToken == null) return null;
+    final url = _getNextPageUri(onlyVideos: isTrendingVideos);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
-
-    if (jsonData['pageInfo']['totalResults'] == null)
-      return <YoutubeApiResult>[];
-
-    if (jsonData == null) return <YoutubeApiResult>[];
-
-    nextPageToken = jsonData['nextPageToken'];
-    prevPageToken = jsonData['prevPageToken'];
-    api!.setNextPageToken(nextPageToken!);
-    api!.setPrevPageToken(prevPageToken!);
-    int total = jsonData['pageInfo']['totalResults'] <
-            jsonData['pageInfo']['resultsPerPage']
-        ? jsonData['pageInfo']['totalResults']
-        : jsonData['pageInfo']['resultsPerPage'];
-    result = await _getListOfYTAPIs(jsonData, total) ?? [];
-    if (total == 0) {
-      return <YoutubeApiResult>[];
-    }
-    page--;
-    return result;
+    return _getResults(jsonData,
+        onlyVideos: isTrendingVideos, newPage: page + 1);
   }
 
   int get getPage => page;
 
-  set setMaxResults(int maxResults) => this.maxResults = maxResults;
+  Uri _getTrendingVideosUri({required String regionCode}) {
+    final options = _getTrendingOption(regionCode).getMap(key);
+    Uri url = Uri.https(baseURL, ResultType.video.unencodedPath, options);
+    return url;
+  }
 
-  get getMaxResults => this.maxResults;
+  Uri _getVideoUri(List<String> videoIds, {DataPart? part}) {
+    videoOptions = VideoOptions(
+      part: part ?? DataPart.contentDetails,
+      id: videoIds,
+      maxResults: videoIds.length,
+    );
+    Uri url = Uri.https(
+        baseURL, ResultType.video.unencodedPath, videoOptions!.getMap(key));
+    return url;
+  }
 
-  set setKey(String key) => api!.key = key;
+  Uri _getSearchInChannelUri(String channelId, Order? order) {
+    searchOptions = SearchOptions(
+      channelId: channelId,
+      order: order ?? Order.date,
+      maxResults: searchOptions.maxResults,
+    );
+    return Uri.https(baseURL, searchUnencodedPath, searchOptions.getMap(key));
+  }
 
-  set setQuery(String query) => api!.query = query;
+  Uri _getSearchUri({required SearchOptions options}) =>
+      Uri.https(baseURL, searchUnencodedPath, options.getMap(key));
 
-  String? get getQuery => api!.query;
+  ///  For Getting Getting Previous Page
+  Uri _getPrevPageUri({bool onlyVideos = false}) {
+    Uri url;
+    if (onlyVideos) {
+      videoOptions = _getTrendingPageOption(prevPageToken!);
+      url = Uri.https(
+          baseURL, ResultType.video.unencodedPath, videoOptions!.getMap(key));
+    } else {
+      searchOptions = SearchOptions(
+        query: searchOptions.query,
+        pageToken: prevPageToken!,
+        channelId: searchOptions.channelId,
+        maxResults: searchOptions.maxResults,
+      );
+      url = Uri.https(baseURL, searchUnencodedPath, searchOptions.getMap(key));
+    }
+    return url;
+  }
 
-  set setType(String type) => api!.type = type;
+  ///  For Getting Getting Next Page
+  Uri _getNextPageUri({bool onlyVideos = false}) {
+    Uri url;
+    if (onlyVideos) {
+      videoOptions = _getTrendingPageOption(nextPageToken!);
+      url = Uri.https(
+          baseURL, ResultType.video.unencodedPath, videoOptions!.getMap(key));
+    } else {
+      searchOptions = SearchOptions(
+        query: searchOptions.query,
+        pageToken: nextPageToken!,
+        channelId: searchOptions.channelId,
+        maxResults: searchOptions.maxResults,
+      );
+      url = Uri.https(baseURL, searchUnencodedPath, searchOptions.getMap(key));
+    }
+    return url;
+  }
 
-  String? get getType => api!.type;
+  VideoOptions _getTrendingOption(String regionCode) => VideoOptions(
+        part: DataPart.snippet,
+        chart: Chart.mostPopular,
+        maxResults: searchOptions.maxResults,
+        regionCode: regionCode,
+      );
+
+  VideoOptions _getTrendingPageOption(String token) => VideoOptions(
+        chart: Chart.mostPopular,
+        maxResults: searchOptions.maxResults,
+        regionCode: searchOptions.regionCode,
+        pageToken: token,
+      );
 }
