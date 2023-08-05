@@ -199,83 +199,74 @@ enum Topic {
   final String id;
   final bool parent;
 
-  Set<Topic>? get children {
-    switch (this) {
-      case music:
-        return {
-          cristianMusic,
-          classicalMusic,
-          country,
-          electronicMusic,
-          hipHopMusic,
-          independentMusic,
-          jazz,
-          musicOfAsia,
-          musicOfLatinAmerica,
-          popMusic,
-          reggae,
-          rhythmAndBlues,
-          rockMusic,
-          soulMusic,
-        };
-      case gaming:
-        return {
-          actionGame,
-          actionAdventureGame,
-          casualGame,
-          musicVideoGame,
-          puzzleVideoGame,
-          racingVideoGame,
-          rolePlayingVideoGame,
-          simulationVideoGame,
-          sportsGame,
-          strategyVideoGame,
-        };
-      case sports:
-        return {
-          americanFootball,
-          baseball,
-          basketball,
-          boxing,
-          cricket,
-          football,
-          golf,
-          iceHockey,
-          mixedMartialArts,
-          motorsport,
-          tennis,
-          volleyball,
-        };
-      case entertainment:
-        return {
-          humor,
-          movies,
-          performingArts,
-          professionalWrestling,
-          tvShows,
-        };
-      case lifestyle:
-        return {
-          fashion,
-          fitness,
-          food,
-          hobby,
-          pets,
-          beauty,
-          technology,
-          tourism,
-          vehicles,
-        };
-      case society:
-        return {
-          business,
-          health,
-          military,
-          politics,
-          religion,
-        };
-      default:
-        return null;
-    }
-  }
+  Set<Topic>? get children => switch (this) {
+        music => {
+            cristianMusic,
+            classicalMusic,
+            country,
+            electronicMusic,
+            hipHopMusic,
+            independentMusic,
+            jazz,
+            musicOfAsia,
+            musicOfLatinAmerica,
+            popMusic,
+            reggae,
+            rhythmAndBlues,
+            rockMusic,
+            soulMusic,
+          },
+        gaming => {
+            actionGame,
+            actionAdventureGame,
+            casualGame,
+            musicVideoGame,
+            puzzleVideoGame,
+            racingVideoGame,
+            rolePlayingVideoGame,
+            simulationVideoGame,
+            sportsGame,
+            strategyVideoGame,
+          },
+        sports => {
+            americanFootball,
+            baseball,
+            basketball,
+            boxing,
+            cricket,
+            football,
+            golf,
+            iceHockey,
+            mixedMartialArts,
+            motorsport,
+            tennis,
+            volleyball,
+          },
+        entertainment => {
+            humor,
+            movies,
+            performingArts,
+            professionalWrestling,
+            tvShows,
+          },
+        lifestyle => {
+            fashion,
+            fitness,
+            food,
+            hobby,
+            pets,
+            beauty,
+            technology,
+            tourism,
+            vehicles,
+          },
+        society => {
+            business,
+            health,
+            military,
+            politics,
+            religion,
+          },
+        _ => null,
+      };
 }

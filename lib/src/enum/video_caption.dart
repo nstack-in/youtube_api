@@ -10,4 +10,14 @@
 /// *   `any` – Do not filter results based on caption availability.
 /// *   `closedCaption` – Only include videos that have captions.
 /// *   `none` – Only include videos that do not have captions.
-enum VideoCaption { any, closedCaption, none }
+enum VideoCaption {
+  any,
+  closedCaption,
+  none;
+
+  static VideoCaption? fromString(String string) => switch (string) {
+        "false" => none,
+        "true" => closedCaption,
+        _ => null,
+      };
+}

@@ -12,4 +12,14 @@
 /// *   `any` – Return all videos, regardless of their resolution.
 /// *   `high` – Only retrieve HD videos.
 /// *   `standard` – Only retrieve videos in standard definition.
-enum VideoDefinition { any, high, standard }
+enum VideoDefinition {
+  any,
+  high,
+  standard;
+
+  static VideoDefinition? fromString(String string) => switch (string) {
+        "hd" => high,
+        "sd" => standard,
+        _ => null,
+      };
+}

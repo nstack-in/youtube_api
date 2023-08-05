@@ -36,4 +36,7 @@ enum QueryParameter {
   hl,
   maxHeight,
   maxWidth,
+  forUsername,
+  managedByMe,
+  mine,
 }

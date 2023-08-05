@@ -1,8 +1,24 @@
+import 'package:youtube_api/src/enum/category.dart';
+import 'package:youtube_api/src/enum/result_type.dart';
+import 'package:youtube_api/src/enum/search/channel_type.dart';
+import 'package:youtube_api/src/enum/search/event_type.dart';
+import 'package:youtube_api/src/enum/search/order.dart';
+import 'package:youtube_api/src/enum/search/safe_search.dart';
+import 'package:youtube_api/src/enum/search/search_part.dart';
+import 'package:youtube_api/src/enum/search/topic.dart';
+import 'package:youtube_api/src/enum/video_caption.dart';
+import 'package:youtube_api/src/enum/video_definition.dart';
+import 'package:youtube_api/src/enum/video_dimension.dart';
+import 'package:youtube_api/src/enum/video_duration.dart';
+import 'package:youtube_api/src/enum/video_embeddable.dart';
+import 'package:youtube_api/src/enum/video_license.dart';
+import 'package:youtube_api/src/enum/video_syndicated.dart';
+import 'package:youtube_api/src/enum/video_type.dart';
 import 'package:youtube_api/src/model/options.dart';
 
 class SearchOptions extends Options {
   const SearchOptions({
-    super.part = DataPart.snippet,
+    this.parts = const [SearchPart.snippet],
     this.forContentOwner,
     this.forDeveloper,
     this.forMine,
@@ -33,6 +49,7 @@ class SearchOptions extends Options {
     this.videoSyndicated,
     this.videoType,
   });
+  final List<SearchPart> parts;
 
   /// This parameter can only be used in a properly authorized request, and it
   /// is intended exclusively for YouTube content partners.
@@ -386,6 +403,7 @@ class SearchOptions extends Options {
   @override
   Map<String, String> getMap(String key) => {
         ...super.getMap(key),
+        QueryParameter.part.name: parts.map((part) => part.name).join(','),
         if (forContentOwner != null)
           QueryParameter.forContentOwner.name: "$forContentOwner",
         if (forDeveloper != null)
@@ -433,7 +451,7 @@ class SearchOptions extends Options {
       };
 
   SearchOptions copyWith({
-    DataPart? part,
+    List<SearchPart>? part,
     int? maxResults,
     String? onBehalfOfContentOwner,
     String? pageToken,
@@ -463,39 +481,38 @@ class SearchOptions extends Options {
     VideoLicense? videoLicense,
     VideoSyndicated? videoSyndicated,
     VideoType? videoType,
-  }) {
-    return SearchOptions(
-      part: part ?? this.part,
-      maxResults: maxResults ?? this.maxResults,
-      onBehalfOfContentOwner:
-          onBehalfOfContentOwner ?? this.onBehalfOfContentOwner,
-      pageToken: pageToken ?? this.pageToken,
-      regionCode: regionCode ?? this.regionCode,
-      forContentOwner: forContentOwner ?? this.forContentOwner,
-      forDeveloper: forDeveloper ?? this.forDeveloper,
-      forMine: forMine ?? this.forMine,
-      channelId: channelId ?? this.channelId,
-      channelType: channelType ?? this.channelType,
-      eventType: eventType ?? this.eventType,
-      location: location ?? this.location,
-      locationRadius: locationRadius ?? this.locationRadius,
-      order: order ?? this.order,
-      publishedAfter: publishedAfter ?? this.publishedAfter,
-      publishedBefore: publishedBefore ?? this.publishedBefore,
-      query: query ?? this.query,
-      relevanceLanguage: relevanceLanguage ?? this.relevanceLanguage,
-      safeSearch: safeSearch ?? this.safeSearch,
-      topic: topic ?? this.topic,
-      type: type ?? this.type,
-      videoCaption: videoCaption ?? this.videoCaption,
-      category: category ?? this.category,
-      videoDefinition: videoDefinition ?? this.videoDefinition,
-      videoDimension: videoDimension ?? this.videoDimension,
-      videoDuration: videoDuration ?? this.videoDuration,
-      videoEmbeddable: videoEmbeddable ?? this.videoEmbeddable,
-      videoLicense: videoLicense ?? this.videoLicense,
-      videoSyndicated: videoSyndicated ?? this.videoSyndicated,
-      videoType: videoType ?? this.videoType,
-    );
-  }
+  }) =>
+      SearchOptions(
+        parts: part ?? this.parts,
+        maxResults: maxResults ?? this.maxResults,
+        onBehalfOfContentOwner:
+            onBehalfOfContentOwner ?? this.onBehalfOfContentOwner,
+        pageToken: pageToken ?? this.pageToken,
+        regionCode: regionCode ?? this.regionCode,
+        forContentOwner: forContentOwner ?? this.forContentOwner,
+        forDeveloper: forDeveloper ?? this.forDeveloper,
+        forMine: forMine ?? this.forMine,
+        channelId: channelId ?? this.channelId,
+        channelType: channelType ?? this.channelType,
+        eventType: eventType ?? this.eventType,
+        location: location ?? this.location,
+        locationRadius: locationRadius ?? this.locationRadius,
+        order: order ?? this.order,
+        publishedAfter: publishedAfter ?? this.publishedAfter,
+        publishedBefore: publishedBefore ?? this.publishedBefore,
+        query: query ?? this.query,
+        relevanceLanguage: relevanceLanguage ?? this.relevanceLanguage,
+        safeSearch: safeSearch ?? this.safeSearch,
+        topic: topic ?? this.topic,
+        type: type ?? this.type,
+        videoCaption: videoCaption ?? this.videoCaption,
+        category: category ?? this.category,
+        videoDefinition: videoDefinition ?? this.videoDefinition,
+        videoDimension: videoDimension ?? this.videoDimension,
+        videoDuration: videoDuration ?? this.videoDuration,
+        videoEmbeddable: videoEmbeddable ?? this.videoEmbeddable,
+        videoLicense: videoLicense ?? this.videoLicense,
+        videoSyndicated: videoSyndicated ?? this.videoSyndicated,
+        videoType: videoType ?? this.videoType,
+      );
 }

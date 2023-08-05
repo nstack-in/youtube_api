@@ -1,4 +1,7 @@
-import 'package:youtube_api/youtube_api.dart';
+import 'package:youtube_api/src/model/channel/youtube_channel.dart';
+import 'package:youtube_api/src/model/playlist/youtube_playlist.dart';
+import 'package:youtube_api/src/model/video/youtube_video.dart';
+import 'package:youtube_api/src/model/youtube_api_result.dart';
 
 /// The `type` parameter restricts a search query to only retrieve a
 /// particular type of resource. The value is a comma-separated list of
@@ -16,28 +19,19 @@ enum ResultType {
   channel,
   playlist;
 
-  static ResultType fromType(Type type) {
-    switch (type) {
-      case YouTubeVideo:
-        return video;
-      case YouTubeChannel:
-        return channel;
-      case YouTubePlaylist:
-        return playlist;
-      default:
-        throw Exception('Invalid type.');
-    }
-  }
+  static ResultType fromType<T extends ApiResult>() => switch (T) {
+        YoutubeVideo => video,
+        YoutubeChannel => channel,
+        YoutubePlaylist => playlist,
+        _ => throw Exception('Invalid type.'),
+      };
 
   String get unencodedPath {
     const base = 'youtube/v3/';
-    switch (this) {
-      case video:
-        return '${base}videos';
-      case channel:
-        return '${base}channels';
-      case playlist:
-        return '${base}playlists';
-    }
+    return switch (this) {
+      video => '${base}videos',
+      channel => '${base}channels',
+      playlist => '${base}playlists',
+    };
   }
 }

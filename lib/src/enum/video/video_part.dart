@@ -25,7 +25,7 @@
 /// *   `status`
 /// *   `suggestions`
 /// *   `topicDetails`
-enum DataPart {
+enum VideoPart {
   contentDetails,
   fileDetails,
   id,

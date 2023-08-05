@@ -1,41 +1,14 @@
-import 'package:youtube_api/src/enum/data_part.dart';
 import 'package:youtube_api/src/enum/query_parameter.dart';
 
 export 'package:youtube_api/src/enum/query_parameter.dart';
-export 'package:youtube_api/src/enum/chart.dart';
-export 'package:youtube_api/src/enum/data_part.dart';
-export 'package:youtube_api/src/enum/my_rating.dart';
-export 'package:youtube_api/src/enum/channel_type.dart';
-export 'package:youtube_api/src/enum/event_type.dart';
-export 'package:youtube_api/src/enum/oder.dart';
-export 'package:youtube_api/src/enum/result_type.dart';
-export 'package:youtube_api/src/enum/safe_search.dart';
-export 'package:youtube_api/src/enum/video_caption.dart';
-export 'package:youtube_api/src/enum/video_definition.dart';
-export 'package:youtube_api/src/enum/video_dimension.dart';
-export 'package:youtube_api/src/enum/video_duration.dart';
-export 'package:youtube_api/src/enum/video_embeddable.dart';
-export 'package:youtube_api/src/enum/video_license.dart';
-export 'package:youtube_api/src/enum/video_syndicated.dart';
-export 'package:youtube_api/src/enum/video_type.dart';
-export 'package:youtube_api/src/enum/category.dart';
-export 'package:youtube_api/src/enum/topic.dart';
 
 abstract class Options {
   const Options({
-    required this.part,
     this.maxResults,
     this.onBehalfOfContentOwner,
     this.pageToken,
     this.regionCode,
   });
-
-  /// The `part` parameter specifies a comma-separated list of one or more
-  /// `search` resource properties that the API response will include. Set the
-  /// parameter value to `snippet`.
-  ///
-  ///`string`
-  final DataPart part;
 
   /// The `maxResults` parameter specifies the maximum number of items that
   /// should be returned in the result set. Acceptable values are `0` to `50`,
@@ -77,11 +50,48 @@ abstract class Options {
 
   Map<String, String> getMap(String key) => {
         "key": key,
-        QueryParameter.part.name: part.name,
         if (maxResults != null) QueryParameter.maxResults.name: "$maxResults",
         if (onBehalfOfContentOwner != null)
           QueryParameter.onBehalfOfContentOwner.name: onBehalfOfContentOwner!,
         if (pageToken != null) QueryParameter.pageToken.name: pageToken!,
         if (regionCode != null) QueryParameter.regionCode.name: regionCode!,
+      };
+}
+
+abstract class SpecificKindOptions extends Options {
+  const SpecificKindOptions({
+    this.id,
+    this.hl,
+    super.maxResults,
+    super.onBehalfOfContentOwner,
+    super.pageToken,
+    super.regionCode,
+  });
+
+  /// The `id` parameter specifies a comma-separated list of the YouTube
+  /// video ID(s) for the resource(s) that are being retrieved. In a `video`
+  /// resource, the `id` property specifies the video's ID.
+  ///
+  /// `string`
+  final List<String>? id;
+
+  /// The `hl` parameter instructs the API to retrieve localized resource
+  /// metadata for a specific[application language that the YouTube website
+  /// supports. The parameter value must be a language code included in the list
+  /// returned by the `i18nLanguages.list` method.
+  ///
+  /// `string`
+  ///
+  /// If localized resource details are available in that language, the
+  /// resource's `snippet.localized` object will contain the localized values.
+  /// However, if localized details are not available, the `snippet.localized`
+  /// object will contain resource details in the resource's default language.
+  final String? hl;
+
+  @override
+  Map<String, String> getMap(String key) => {
+        ...super.getMap(key),
+        if (id != null) QueryParameter.id.name: id!.join(','),
+        if (hl != null) QueryParameter.hl.name: hl!,
       };
 }

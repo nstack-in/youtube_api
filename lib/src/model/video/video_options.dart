@@ -1,43 +1,28 @@
+import 'package:youtube_api/src/enum/video/chart.dart';
+import 'package:youtube_api/src/enum/video/my_rating.dart';
+import 'package:youtube_api/src/enum/video/video_part.dart';
 import 'package:youtube_api/src/model/options.dart';
 
-class VideoOptions extends Options {
+class VideoOptions extends SpecificKindOptions {
   const VideoOptions({
-    super.part = DataPart.snippet,
+    this.parts = const {VideoPart.snippet},
     this.chart,
-    this.id,
+    super.id,
     this.myRating,
     super.maxResults,
     super.onBehalfOfContentOwner,
     super.pageToken,
     super.regionCode,
-    this.hl,
+    super.hl,
     this.maxHeight,
     this.maxWidth,
   });
 
+  final Set<VideoPart> parts;
+
   final Chart? chart;
 
-  /// The `id` parameter specifies a comma-separated list of the YouTube
-  /// video ID(s) for the resource(s) that are being retrieved. In a `video`
-  /// resource, the `id` property specifies the video's ID.
-  ///
-  /// `string`
-  final List<String>? id;
-
   final MyRating? myRating;
-
-  /// The `hl` parameter instructs the API to retrieve localized resource
-  /// metadata for a specific[application language that the YouTube website
-  /// supports. The parameter value must be a language code included in the list
-  /// returned by the `i18nLanguages.list` method.
-  ///
-  /// `string`
-  ///
-  /// If localized resource details are available in that language, the
-  /// resource's `snippet.localized` object will contain the localized values.
-  /// However, if localized details are not available, the `snippet.localized`
-  /// object will contain resource details in the resource's default language.
-  final String? hl;
 
   /// The `maxHeight` parameter specifies the maximum height of the embedded
   /// player returned in the `player.embedHtml` property. You can use this
@@ -65,7 +50,8 @@ class VideoOptions extends Options {
   @override
   Map<String, String> getMap(String key) => {
         ...super.getMap(key),
-        if (chart != null) QueryParameter.chart.name: "$chart",
+        QueryParameter.part.name: parts.map((part) => part.name).join(','),
+        if (chart != null) QueryParameter.chart.name: chart!.name,
         if (id != null) QueryParameter.id.name: id!.join(','),
         if (myRating != null) QueryParameter.myRating.name: myRating!.name,
         if (hl != null) QueryParameter.hl.name: hl!,
@@ -74,7 +60,7 @@ class VideoOptions extends Options {
       };
 
   VideoOptions copyWith({
-    DataPart? part,
+    Set<VideoPart>? parts,
     int? maxResults,
     String? onBehalfOfContentOwner,
     String? pageToken,
@@ -85,20 +71,19 @@ class VideoOptions extends Options {
     String? hl,
     int? maxHeight,
     String? maxWidth,
-  }) {
-    return VideoOptions(
-      part: part ?? this.part,
-      maxResults: maxResults ?? this.maxResults,
-      onBehalfOfContentOwner:
-          onBehalfOfContentOwner ?? this.onBehalfOfContentOwner,
-      pageToken: pageToken ?? this.pageToken,
-      regionCode: regionCode ?? this.regionCode,
-      chart: chart ?? this.chart,
-      id: id ?? this.id,
-      myRating: myRating ?? this.myRating,
-      hl: hl ?? this.hl,
-      maxHeight: maxHeight ?? this.maxHeight,
-      maxWidth: maxWidth ?? this.maxWidth,
-    );
-  }
+  }) =>
+      VideoOptions(
+        parts: parts ?? this.parts,
+        maxResults: maxResults ?? this.maxResults,
+        onBehalfOfContentOwner:
+            onBehalfOfContentOwner ?? this.onBehalfOfContentOwner,
+        pageToken: pageToken ?? this.pageToken,
+        regionCode: regionCode ?? this.regionCode,
+        chart: chart ?? this.chart,
+        id: id ?? this.id,
+        myRating: myRating ?? this.myRating,
+        hl: hl ?? this.hl,
+        maxHeight: maxHeight ?? this.maxHeight,
+        maxWidth: maxWidth ?? this.maxWidth,
+      );
 }

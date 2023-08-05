@@ -1,3 +1,5 @@
+import 'package:enum_to_string/enum_to_string.dart';
+
 /// The `videoDimension` parameter lets you restrict a search to only retrieve 2D
 /// or 3D videos. If you specify a value for this parameter, you must also set
 /// the `type` parameter's value to `video`.
@@ -18,4 +20,7 @@ enum VideoDimension {
   const VideoDimension(this.value);
 
   final String value;
+
+  static VideoDimension? fromString(String string) =>
+      EnumToString.fromString(values, string);
 }
