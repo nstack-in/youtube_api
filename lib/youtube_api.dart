@@ -71,7 +71,7 @@ class YoutubeAPI {
 
   /// Get video results by ID
   Future<List<YoutubeVideo>> searchVideosById(List<String> ids,
-      {Set<VideoPart> parts = const {VideoPart.snippet}}) async {
+      {Set<VideoPart> parts = VideoPart.implementedParts}) async {
     final url = _getVideoUri(ids, parts: parts);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body);
@@ -82,7 +82,7 @@ class YoutubeAPI {
 
   /// Get channel results by ID
   Future<List<YoutubeChannel>> searchChannelsById(List<String> ids,
-      {Set<ChannelPart> parts = const {ChannelPart.snippet}}) async {
+      {Set<ChannelPart> parts = ChannelPart.implementedParts}) async {
     final url = _getChannelUri(ids, parts: parts);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body) as Map<String, dynamic>;
@@ -93,7 +93,7 @@ class YoutubeAPI {
 
   /// Get channel results by ID
   Future<List<YoutubePlaylist>> searchPlaylistsById(List<String> ids,
-      {Set<PlaylistPart> parts = const {PlaylistPart.snippet}}) async {
+      {Set<PlaylistPart> parts = PlaylistPart.implementedParts}) async {
     final url = _getPlaylistUri(ids, parts: parts);
     var res = await http.get(url, headers: headers);
     var jsonData = json.decode(res.body) as Map<String, dynamic>;

@@ -18,7 +18,7 @@ import 'package:youtube_api/src/model/options.dart';
 
 class SearchOptions extends Options {
   const SearchOptions({
-    this.parts = const [SearchPart.snippet],
+    this.parts = const {SearchPart.snippet},
     this.forContentOwner,
     this.forDeveloper,
     this.forMine,
@@ -49,7 +49,7 @@ class SearchOptions extends Options {
     this.videoSyndicated,
     this.videoType,
   });
-  final List<SearchPart> parts;
+  final Set<SearchPart> parts;
 
   /// This parameter can only be used in a properly authorized request, and it
   /// is intended exclusively for YouTube content partners.
@@ -451,7 +451,7 @@ class SearchOptions extends Options {
       };
 
   SearchOptions copyWith({
-    List<SearchPart>? part,
+    Set<SearchPart>? part,
     int? maxResults,
     String? onBehalfOfContentOwner,
     String? pageToken,

@@ -24,5 +24,7 @@ enum PlaylistPart {
   localizations,
   player,
   snippet,
-  status,
+  status;
+
+  static const implementedParts = {snippet};
 }

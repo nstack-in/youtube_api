@@ -32,5 +32,7 @@ enum ChannelPart {
   snippet,
   statistics,
   status,
-  topicDetails,
+  topicDetails;
+
+  static const implementedParts = {snippet, brandingSettings};
 }

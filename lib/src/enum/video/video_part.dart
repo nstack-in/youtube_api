@@ -38,5 +38,7 @@ enum VideoPart {
   statistics,
   status,
   suggestions,
-  topicDetails,
+  topicDetails;
+
+  static const implementedParts = {snippet, contentDetails};
 }
