@@ -6,7 +6,7 @@ import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
 import 'package:youtube_api/src/model/youtube_api_result.dart';
 
 class VideoSnippet extends ChannelBelongSnippet {
-  VideoSnippet({
+  const VideoSnippet({
     super.publishedAt,
     super.channelId,
     super.title,

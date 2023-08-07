@@ -2,7 +2,7 @@ import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
 import 'package:youtube_api/src/model/thumbnails/thumbnail_resolution.dart';
 
 abstract class Snippet {
-  Snippet({
+  const Snippet({
     this.publishedAt,
     this.title,
     this.description,
@@ -58,7 +58,7 @@ abstract class Snippet {
 }
 
 abstract class ChannelBelongSnippet extends Snippet {
-  ChannelBelongSnippet({
+  const ChannelBelongSnippet({
     super.publishedAt,
     super.title,
     super.description,

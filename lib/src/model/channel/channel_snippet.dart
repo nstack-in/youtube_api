@@ -2,7 +2,7 @@ import 'package:youtube_api/src/model/snippet.dart';
 import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
 
 class ChannelSnippet extends Snippet {
-  ChannelSnippet({
+  const ChannelSnippet({
     super.publishedAt,
     super.title,
     super.description,

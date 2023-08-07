@@ -2,7 +2,7 @@ import 'package:youtube_api/src/model/snippet.dart';
 import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
 
 class PlaylistSnippet extends ChannelBelongSnippet {
-  PlaylistSnippet({
+  const PlaylistSnippet({
     super.publishedAt,
     super.title,
     super.description,
