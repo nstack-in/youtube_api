@@ -45,9 +45,14 @@ class _DemoAppState extends State<DemoApp> {
       VideoPart.snippet,
       VideoPart.contentDetails,
     });
-    _result = await _youtube.searchChannelsById(["UCwXdFgeE9KYzlDdR7TG9cMw"]);
     _result = await _youtube
         .searchPlaylistsById(["PLjxrf2q8roU0WrDTm4tUB430Mja7dQEVP"]);
+    _result = await _youtube.searchChannelsById([
+      "UCwXdFgeE9KYzlDdR7TG9cMw"
+    ], parts: {
+      ChannelPart.snippet,
+      ChannelPart.brandingSettings,
+    });
     setState(() {});
   }
 
@@ -151,6 +156,22 @@ class _DemoAppState extends State<DemoApp> {
           ),
           Text("publishedAt: ${obj.snippet!.publishedAt}"),
           Text("description: ${obj.snippet!.description}"),
+        ],
+        if (obj.brandingSettings != null) ...[
+          Text(
+            obj.brandingSettings!.country ?? '',
+            style: TextStyle(fontSize: 18.0),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            child: Text(
+              obj.brandingSettings!.keywords.toString(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text("moderateComments: ${obj.brandingSettings!.moderateComments}"),
+          Text(
+              "unsubscribedTrailer: ${obj.brandingSettings!.unsubscribedTrailer}"),
         ],
       ];
   List<Widget> _buildPlaylistElements(YoutubePlaylist obj) => [
