@@ -1,5 +1,5 @@
-import 'package:youtube_api/src/enum/channel/channel_part.dart';
-import 'package:youtube_api/src/model/options.dart';
+import 'package:youtube_api_client/enum/channel/channel_part.dart';
+import 'package:youtube_api_client/model/options.dart';
 
 class ChannelOptions extends SpecificKindOptions {
   ChannelOptions({

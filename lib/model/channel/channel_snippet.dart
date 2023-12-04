@@ -1,5 +1,5 @@
-import 'package:youtube_api/src/model/snippet.dart';
-import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
+import 'package:youtube_api_client/model/snippet.dart';
+import 'package:youtube_api_client/model/thumbnails/thumbnail.dart';
 
 class ChannelSnippet extends Snippet {
   const ChannelSnippet({

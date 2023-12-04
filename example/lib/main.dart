@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_api/youtube_api.dart';
+import 'package:youtube_api_client/youtube_api.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +20,7 @@ class DemoApp extends StatefulWidget {
 class _DemoAppState extends State<DemoApp> {
   static String _key = "YOUR_API_KEY";
 
-  final _youtube = YoutubeAPI(_key);
+  final _youtube = YoutubeApi(_key);
   List<ApiResult> _result = [];
 
   Future<void> callAPI() async {

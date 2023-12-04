@@ -1,7 +1,7 @@
-import 'package:youtube_api/src/model/channel/youtube_channel.dart';
-import 'package:youtube_api/src/model/playlist/youtube_playlist.dart';
-import 'package:youtube_api/src/model/video/youtube_video.dart';
-import 'package:youtube_api/src/model/youtube_api_result.dart';
+import 'package:youtube_api_client/model/channel/youtube_channel.dart';
+import 'package:youtube_api_client/model/playlist/youtube_playlist.dart';
+import 'package:youtube_api_client/model/video/youtube_video.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
 
 /// The `type` parameter restricts a search query to only retrieve a
 /// particular type of resource. The value is a comma-separated list of

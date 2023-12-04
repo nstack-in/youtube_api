@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:youtube_api/src/enum/result_type.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
 
 enum ThumbnailResolution {
   /// The default thumbnail image. The default thumbnail for a video – or a

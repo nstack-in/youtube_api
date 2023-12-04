@@ -1,7 +1,7 @@
-import 'package:youtube_api/src/enum/video/chart.dart';
-import 'package:youtube_api/src/enum/video/my_rating.dart';
-import 'package:youtube_api/src/enum/video/video_part.dart';
-import 'package:youtube_api/src/model/options.dart';
+import 'package:youtube_api_client/enum/video/chart.dart';
+import 'package:youtube_api_client/enum/video/my_rating.dart';
+import 'package:youtube_api_client/enum/video/video_part.dart';
+import 'package:youtube_api_client/model/options.dart';
 
 class VideoOptions extends SpecificKindOptions {
   const VideoOptions({

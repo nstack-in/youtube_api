@@ -1,9 +1,9 @@
-import 'package:youtube_api/src/enum/category.dart';
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/enum/video/live_broadcast_content.dart';
-import 'package:youtube_api/src/model/snippet.dart';
-import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
-import 'package:youtube_api/src/model/youtube_api_result.dart';
+import 'package:youtube_api_client/enum/category.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/enum/video/live_broadcast_content.dart';
+import 'package:youtube_api_client/model/snippet.dart';
+import 'package:youtube_api_client/model/thumbnails/thumbnail.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
 
 class VideoSnippet extends ChannelBelongSnippet {
   const VideoSnippet({

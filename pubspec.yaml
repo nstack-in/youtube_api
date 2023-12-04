@@ -1,9 +1,9 @@
-name: youtube_api
-description: YouTubeAPI is a plugin which directly interacts with YouTube
-  server. Supports Searching video and playlist.
+name: youtube_api_client
+description:
+  YouTube API Client is a plugin which directly interacts with YouTube
+  server. Supports searching videos, channels and playlists.
 version: 1.1.0
-homepage: https://github.com/nstack-in/youtube_api
-repository: https://github.com/nstack-in/youtube_api
+repository: https://github.com/hyungtaecf/youtube_api
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -21,8 +21,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter:
-  plugin:
-    platforms:
-      some_platform:
-        pluginClass: somePluginClass
+screenshots:
+  - description: "Demo"
+    path: "screenshots/demo.jpg"
+
+topics:
+  - youtube
+  - youtubeapi
+  - API
+  - Video

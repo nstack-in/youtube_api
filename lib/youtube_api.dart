@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:youtube_api/src/model/youtube_api_result.dart';
-import 'package:youtube_api/src/video.dart';
-import 'package:youtube_api/src/playlist.dart';
-import 'package:youtube_api/src/channel.dart';
-import 'package:youtube_api/src/search.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
+import 'package:youtube_api_client/video.dart';
+import 'package:youtube_api_client/playlist.dart';
+import 'package:youtube_api_client/channel.dart';
+import 'package:youtube_api_client/search.dart';
 
-export 'package:youtube_api/src/model/youtube_api_result.dart';
-export 'package:youtube_api/src/video.dart';
-export 'package:youtube_api/src/playlist.dart';
-export 'package:youtube_api/src/channel.dart';
-export 'package:youtube_api/src/search.dart';
-export 'package:youtube_api/src/model/thumbnails/thumbnail_resolution.dart';
+export 'package:youtube_api_client/model/youtube_api_result.dart';
+export 'package:youtube_api_client/video.dart';
+export 'package:youtube_api_client/playlist.dart';
+export 'package:youtube_api_client/channel.dart';
+export 'package:youtube_api_client/search.dart';
+export 'package:youtube_api_client/model/thumbnails/thumbnail_resolution.dart';
 
-class YoutubeAPI {
+class YoutubeApi {
   late SearchOptions searchOptions;
   String key;
   String? nextPageToken;
@@ -23,7 +23,7 @@ class YoutubeAPI {
   static const searchUnencodedPath = "youtube/v3/search";
   int page = 0;
   final headers = {"Accept": "application/json"};
-  YoutubeAPI(
+  YoutubeApi(
     this.key, {
     int maxResults = 10,
   }) {

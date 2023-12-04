@@ -1,5 +1,5 @@
 name: youtube_api_example
-description: Demonstrates how to use the youtube_api plugin.
+description: Demonstrates how to use the youtube_api_client plugin.
 version: 1.0.0
 
 # The following line prevents the package from being accidentally published to
@@ -13,9 +13,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  youtube_api:
+  youtube_api_client:
     # When depending on this package from a real application you should use:
-    #   youtube_api: ^x.y.z
+    #   youtube_api_client: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.

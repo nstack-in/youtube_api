@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:youtube_api/src/model/thumbnails/thumbnail_resolution.dart';
+import 'package:youtube_api_client/model/thumbnails/thumbnail_resolution.dart';
 
 class Thumbnail {
   Thumbnail({

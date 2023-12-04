@@ -1,5 +1,5 @@
-import 'package:youtube_api/src/enum/playlist/playlist_part.dart';
-import 'package:youtube_api/src/model/options.dart';
+import 'package:youtube_api_client/enum/playlist/playlist_part.dart';
+import 'package:youtube_api_client/model/options.dart';
 
 class PlaylistOptions extends SpecificKindOptions {
   const PlaylistOptions({

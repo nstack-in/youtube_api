@@ -1,20 +1,20 @@
-import 'package:youtube_api/src/enum/category.dart';
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/enum/search/channel_type.dart';
-import 'package:youtube_api/src/enum/search/event_type.dart';
-import 'package:youtube_api/src/enum/search/order.dart';
-import 'package:youtube_api/src/enum/search/safe_search.dart';
-import 'package:youtube_api/src/enum/search/search_part.dart';
-import 'package:youtube_api/src/enum/search/topic.dart';
-import 'package:youtube_api/src/enum/video_caption.dart';
-import 'package:youtube_api/src/enum/video_definition.dart';
-import 'package:youtube_api/src/enum/video_dimension.dart';
-import 'package:youtube_api/src/enum/video_duration.dart';
-import 'package:youtube_api/src/enum/video_embeddable.dart';
-import 'package:youtube_api/src/enum/video_license.dart';
-import 'package:youtube_api/src/enum/video_syndicated.dart';
-import 'package:youtube_api/src/enum/video_type.dart';
-import 'package:youtube_api/src/model/options.dart';
+import 'package:youtube_api_client/enum/category.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/enum/search/channel_type.dart';
+import 'package:youtube_api_client/enum/search/event_type.dart';
+import 'package:youtube_api_client/enum/search/order.dart';
+import 'package:youtube_api_client/enum/search/safe_search.dart';
+import 'package:youtube_api_client/enum/search/search_part.dart';
+import 'package:youtube_api_client/enum/search/topic.dart';
+import 'package:youtube_api_client/enum/video_caption.dart';
+import 'package:youtube_api_client/enum/video_definition.dart';
+import 'package:youtube_api_client/enum/video_dimension.dart';
+import 'package:youtube_api_client/enum/video_duration.dart';
+import 'package:youtube_api_client/enum/video_embeddable.dart';
+import 'package:youtube_api_client/enum/video_license.dart';
+import 'package:youtube_api_client/enum/video_syndicated.dart';
+import 'package:youtube_api_client/enum/video_type.dart';
+import 'package:youtube_api_client/model/options.dart';
 
 class SearchOptions extends Options {
   const SearchOptions({

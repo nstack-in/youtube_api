@@ -1,7 +1,7 @@
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/model/channel/branding_settings.dart';
-import 'package:youtube_api/src/model/channel/channel_snippet.dart';
-import 'package:youtube_api/src/model/youtube_api_result.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/model/channel/branding_settings.dart';
+import 'package:youtube_api_client/model/channel/channel_snippet.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
 
 class YoutubeChannel extends ApiResult {
   YoutubeChannel(data, {bool isSingleResult = false})

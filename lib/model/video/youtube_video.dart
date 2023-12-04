@@ -1,7 +1,7 @@
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/model/video/video_content_details.dart';
-import 'package:youtube_api/src/model/video/video_snippet.dart';
-import 'package:youtube_api/src/model/youtube_api_result.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/model/video/video_content_details.dart';
+import 'package:youtube_api_client/model/video/video_snippet.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
 
 class YoutubeVideo extends ApiResult {
   YoutubeVideo(data, {bool isSingleResult = false})

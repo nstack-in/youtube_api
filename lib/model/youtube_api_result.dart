@@ -1,9 +1,9 @@
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/model/channel/youtube_channel.dart';
-import 'package:youtube_api/src/model/playlist/youtube_playlist.dart';
-import 'package:youtube_api/src/model/snippet.dart';
-import 'package:youtube_api/src/model/video/youtube_video.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/model/channel/youtube_channel.dart';
+import 'package:youtube_api_client/model/playlist/youtube_playlist.dart';
+import 'package:youtube_api_client/model/snippet.dart';
+import 'package:youtube_api_client/model/video/youtube_video.dart';
 
 abstract class ApiResult {
   late String id;

@@ -1,5 +1,5 @@
-import 'package:youtube_api/src/model/thumbnails/thumbnail.dart';
-import 'package:youtube_api/src/model/thumbnails/thumbnail_resolution.dart';
+import 'package:youtube_api_client/model/thumbnails/thumbnail.dart';
+import 'package:youtube_api_client/model/thumbnails/thumbnail_resolution.dart';
 
 abstract class Snippet {
   const Snippet({

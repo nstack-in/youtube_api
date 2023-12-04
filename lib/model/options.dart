@@ -1,6 +1,6 @@
-import 'package:youtube_api/src/enum/query_parameter.dart';
+import 'package:youtube_api_client/enum/query_parameter.dart';
 
-export 'package:youtube_api/src/enum/query_parameter.dart';
+export 'package:youtube_api_client/enum/query_parameter.dart';
 
 abstract class Options {
   const Options({

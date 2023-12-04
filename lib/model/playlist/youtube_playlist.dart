@@ -1,6 +1,6 @@
-import 'package:youtube_api/src/enum/result_type.dart';
-import 'package:youtube_api/src/model/youtube_api_result.dart';
-import 'package:youtube_api/src/playlist.dart';
+import 'package:youtube_api_client/enum/result_type.dart';
+import 'package:youtube_api_client/model/youtube_api_result.dart';
+import 'package:youtube_api_client/playlist.dart';
 
 class YoutubePlaylist extends ApiResult {
   YoutubePlaylist(data, {bool isSingleResult = false})

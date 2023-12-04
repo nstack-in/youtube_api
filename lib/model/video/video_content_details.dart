@@ -1,5 +1,5 @@
-import 'package:youtube_api/src/util/get_duration.dart';
-import 'package:youtube_api/src/video.dart';
+import 'package:youtube_api_client/util/duration_extension.dart';
+import 'package:youtube_api_client/video.dart';
 
 /// The contentDetails object contains information about the video content,
 /// including the length of the video and an indication of whether captions are
