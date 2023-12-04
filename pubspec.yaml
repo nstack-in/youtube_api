@@ -22,11 +22,11 @@ dev_dependencies:
     sdk: flutter
 
 screenshots:
-  - description: "Demo"
+  - description: "Demo showing API call result."
     path: "screenshots/demo.jpg"
 
 topics:
   - youtube
-  - youtubeapi
-  - API
-  - Video
+  - youtube-api
+  - api
+  - video
