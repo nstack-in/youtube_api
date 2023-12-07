@@ -1,112 +1,86 @@
-# YouTube API (youtube_api)
+# YouTube API Client (youtube_api_client)
 
-[![pub package](https://img.shields.io/pub/v/youtube_api.svg)](https://pub.dartlang.org/packages/youtube_api)
+Forked (all restructured and improved) from [youtube_api](https://pub.dartlang.org/packages/youtube_api)
 
 A Flutter plugin for fetching interacting with YouTube Server to fetch data using API. Supports iOS and Android.
 
 ## Features:
 
-- Search Video, Playlist, Channel on YouTube.
+- Search Video, Playlist, Channel on YouTube (query by keywords or by ID)
 - Get Trending Videos based on region code.
 
 ## Usage
 
-To use this plugin, add `youtube_api` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To use this plugin, add `youtube_api_client` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
-[Complete Example Code](https://pub.dartlang.org/packages/youtube_api#-example-tab-)
+[Complete Example Code](https://pub.dartlang.org/packages/youtube_api_client#-example-tab-)
 
 ### Example
 
-![alt text](https://raw.githubusercontent.com/nstack-in/youtube_api/master/demo.jpg)
-
 ```dart
-
-static String key = 'YOUR_API_KEY';
-YoutubeAPI ytApi = new YoutubeAPI(key);
-List<YouTubeVideo> videoResult = [];
+static String key = "YOUR_API_KEY";
+final youtube = YoutubeApi(_key);
+List<ApiResult> result = [];
 ```
 
-To search for videos or Channels-
+Search for videos, channels and playlists
 
 ```dart
 String query = "Flutter";
-videoResult = await ytApi.search(query);
-// data which are available in videoResult are shown below
+result = await youtube.search(query);
+// data which are available in result is typed as in the example shown below
+```
+
+By default the search options are like the following:
+
+```dart
+SearchOptions options = const SearchOptions(
+      type: ResultType.values,
+      order: Order.relevance,
+      videoDuration: VideoDuration.any,
+    )
+```
+
+But you can customize them changing the parameter options. For example, if you want to get only results for channels, you can specify like so:
+
+```dart
+SearchOptions(type: ResultType.channel)
 ```
 
 To get Trending videos in your Country-
 
 ```dart
 regionCode='YOUR_COUNTRY_REGION_CODE(apha-2)';
-videoResult = await ytApi.getTrends(regionCode);
+result = await youtube.getTrends(regionCode);
 //make sure you assign alpha-2 region code
+```
+
+To get results by id use `searchVideosById`, `searchChannelsById`, and `searchPlaylistsById`.
+
+```dart
+result = await youtube.searchVideosById(idList);
 ```
 
 [You can find your Country Region Code here](https://www.iso.org/obp/ui/#search/code/)
 
-These data are stored in videoResult
+By default, it retrieves only the "snippet" data, which has enough information for most of the cases.
 
-```json
-[
-  {
-    "kind": "video",
-    "id": "9vzd289Eedk",
-    "channelTitle": "Java",
-    "title": "WEBINAR - Programmatic Trading in Indian Markets using Python with Kite Connect API",
-    "description": "For traders today, Python is the most preferred programming language for trading, as it provides great flexibility in terms of building and executing strategies.",
-    "publishedAt": "2016-10-18T14:41:14.000Z",
-    "channelId": "UC8kXgHG13XdgsigIPRmrIyA",
-    "thumbnails": {
-      "default": {
-        "url": "https://i.ytimg.com/vi/9vzd289Eedk/default.jpg",
-        "width": 120,
-        "height": 90
-      },
-      "medium": {
-        "url": "https://i.ytimg.com/vi/9vzd289Eedk/mqdefault.jpg",
-        "width": 320,
-        "height": 180
-      },
-      "high": {
-        "url": "https://i.ytimg.com/vi/9vzd289Eedk/hqdefault.jpg",
-        "width": 480,
-        "height": 360
-      }
-    },
-    "channelurl": "https://www.youtube.com/channel/UC8kXgHG13XdgsigIPRmrIyA",
-    "url": "https://www.youtube.com/watch?v=9vzd289Eedk"
-  },
-  {
-    "kind": "video"
-    // Data for your next result in a similar way
-  },
-  {
-    // Data for your next result in a similar way
-    "url": "https://www.youtube.com/watch?v=9vzd289Eedk"
-  }
-]
-```
+For example the snippet for a video contains:
 
-Default per-page result is 10 .
+1. title (String)
+2. description (String)
+3. publish date (DateTime)
+4. channel ID (String)
+5. channel title (String)
+6. thumbnails (Map<ThumbnailResolution, Thumbnail> - custom classes)
+7. video category (Category - enum)
+8. tags (List<String>)
+9. default language (String)
+10. defaultAudioLanguage (String)
+11. live broadcast content (LiveBroadcastContent - enum)
 
-If you want search any specif out i.e video or playlist or channel.
-For Channel only specify > Type : "channel"
+If you need more information from the API, you can add other parts in the query. For now it has only the part "snippet" and "content details" (containing: duration, dimension, definition, caption, licensed content, and projection). The original API has lots more of information, so you are welcome to help implementing those making pull requests.
 
-For Video only specify > Type : "video"
+## Motivation
 
-For Playlist only specify > Type : "playlist"
-
-maxResults(int) can be 1 - 50
-
-```dart
-
-int max = 25;
-
-String type = "channel";
-
-YoutubeAPI ytApi = new YoutubeAPI(key, maxResults: max, Type: type);
-
-```
-
-[Feedback welcome](https://github.com/nitishk72/youtube_api/issues) and
-[Pull Requests](https://github.com/nitishk72/youtube_api/pulls) are most welcome!
+The original package seems to be abandoned. I improved a lot its code, making it more typed, and added more features.
